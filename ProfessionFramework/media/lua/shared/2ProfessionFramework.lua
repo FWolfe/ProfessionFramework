@@ -210,6 +210,9 @@ ProfessionFramework.doTraits = function()
     TraitFactory.addTrait("Outdoorsman2", getText("UI_trait_outdoorsman"), 0, getText("UI_trait_outdoorsmandesc"), true)
     TraitFactory.addTrait("AdrenalineJunkie2", getText("UI_trait_AdrenalineJunkie"), 0, getText("UI_trait_AdrenalineJunkieDesc"), true)
     TraitFactory.addTrait("NightVision2", getText("UI_trait_NightVision"), 0, getText("UI_trait_NightVisionDesc"), true)
+    TraitFactory.setMutualExclusive("Outdoorsman2", "Outdoorsman")
+    TraitFactory.setMutualExclusive("AdrenalineJunkie2", "AdrenalineJunkie")
+    TraitFactory.setMutualExclusive("NightVision2", "NightVision")
     ProfessionFramework.TraitSwaps["Outdoorsman2"] = "Outdoorsman"
     ProfessionFramework.TraitSwaps["AdrenalineJunkie2"] = "AdrenalineJunkie"
     ProfessionFramework.TraitSwaps["NightVision2"] = "NightVision"
@@ -219,6 +222,10 @@ ProfessionFramework.doTraits = function()
     TraitFactory.addTrait("Agoraphobic2", getText("UI_trait_agoraphobic"), 0, getText("UI_trait_agoraphobicdesc"), true)
     TraitFactory.addTrait("Claustophobic2", getText("UI_trait_claustro"), 0, getText("UI_trait_claustrodesc"), true)
     TraitFactory.addTrait("Hemophobic2", getText("UI_trait_Hemophobic"), 0, getText("UI_trait_HemophobicDesc"), true)
+    TraitFactory.setMutualExclusive("Hypercondriac2", "Hypercondriac")
+    TraitFactory.setMutualExclusive("Agoraphobic2", "Agoraphobic")
+    TraitFactory.setMutualExclusive("Claustophobic2", "Claustophobic")
+    TraitFactory.setMutualExclusive("Hemophobic2", "Hemophobic")
     ProfessionFramework.TraitSwaps["Hypercondriac2"] = "Hypercondriac"
     ProfessionFramework.TraitSwaps["Agoraphobic2"] = "Agoraphobic"
     ProfessionFramework.TraitSwaps["Claustophobic2"] = "Claustophobic"
@@ -230,6 +237,10 @@ ProfessionFramework.doTraits = function()
     TraitFactory.addTrait("Pacifist2", getText("UI_trait_Pacifist"), 0, getText("UI_trait_PacifistDesc"), true)
     TraitFactory.addTrait("Smoker2", getText("UI_trait_Smoker"), 0, getText("UI_trait_SmokerDesc"), true)
     TraitFactory.addTrait("Asthmatic2", getText("UI_trait_Asthmatic"), 0, getText("UI_trait_AsthmaticDesc"), true)
+    TraitFactory.setMutualExclusive("Insomniac2", "Insomniac")
+    TraitFactory.setMutualExclusive("Pacifist2", "Pacifist")
+    TraitFactory.setMutualExclusive("Smoker2", "Smoker")
+    TraitFactory.setMutualExclusive("Asthmatic2", "Asthmatic")
     ProfessionFramework.TraitSwaps["Insomniac2"] = "Insomniac"
     ProfessionFramework.TraitSwaps["Pacifist2"] = "Pacifist"
     ProfessionFramework.TraitSwaps["Smoker2"] = "Smoker"
@@ -247,6 +258,7 @@ end
 
 ProfessionFramework.doProfessions = function()
     for ptype, details in pairs(ProfessionFramework.Professions) do
+        print("Adjusting Profession: "..ptype)
         local cost = details.cost or 0
         local textname = details.name or "Unknown"
         local icon = details.icon or ""
