@@ -1,6 +1,3 @@
-require "NPCs/MainCreationMethods.lua"
-local oldDoTraits = BaseGameCharacterDetails.DoTraits
-local oldDoProfessions = BaseGameCharacterDetails.DoProfessions
 
 ProfessionFramework = {
     Professions = { },
