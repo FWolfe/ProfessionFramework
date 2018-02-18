@@ -284,9 +284,9 @@ ProfessionFramework.doProfessions = function()
             end
         end
         if details.recipies then
-            -- this:setFreeRecipies(details.recipies)
+            -- this:setFreeRecipies(details.recipes)
             local free = this:getFreeRecipes()
-            for _, recipe in ipairs(details.recipies) do
+            for _, recipe in ipairs(details.recipes) do
                 free:add(recipe)
             end
         end

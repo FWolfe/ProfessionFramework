@@ -19,7 +19,7 @@ ProfessionFramework.addProfession('sniper', {
         [Perks.Lightfoot] = 3,
     },
     traits = {"Inconspicuous2", "Graceful2", "Brave2"}, -- traits to add
-    recipies = {}, -- no free recipies
+    recipes = {}, -- no free recipies
     inventory = { -- inventory items to add
         ["ORGM.SR25"] = 1,
         ["ORGM.SR25Mag"] = 2,
