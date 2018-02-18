@@ -15,7 +15,7 @@ ProfessionFramework.addProfession('sniper', {
     xp = {  -- list of perks and the starting levels
         [Perks.Aiming] = 6,
         [Perks.Reloading] = 4,
-        [Perks.Sneeking] = 4,
+        [Perks.Sneak] = 4,
         [Perks.Lightfoot] = 3,
     },
     traits = {"Inconspicuous2", "Graceful2", "Brave2"}, -- traits to add
