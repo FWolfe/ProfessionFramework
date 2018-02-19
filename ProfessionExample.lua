@@ -71,7 +71,7 @@ ProfessionFramework.addProfession('parkranger', {
 
 
 --[[ Example of editing the Chef profession, simply adding starting equipment
-    a set of GOOD kitchen knifes
+    a set of GOOD kitchen knives
 ]]
 ProfessionFramework.addProfession('chef', {
     inventory = {
