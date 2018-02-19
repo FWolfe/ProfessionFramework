@@ -1,3 +1,8 @@
+--[[ Client file for the profession framework mod.
+    This handles the special profession trait swaps, adding starter kits, and
+    running custom OnNewGame events for each profession.
+]]
+
 Events.OnNewGame.Add(function(player, square)
     local profession = player:getDescriptor():getProfession()
     local inventory = player:getInventory()
@@ -13,19 +18,25 @@ Events.OnNewGame.Add(function(player, square)
     local ptable = ProfessionFramework.getProfession(profession)
     if not ptable then return end
     -- add items to inventory
-    if ptable.inventory then
-        for item, count in pairs(ptable.inventory) do
-            inventory:AddItems(item, count)
-        end
-    end
-    -- add items to the floor
-    if ptable.square then
-        for item, count in pairs(ptable.square) do
-            for i=1, count do
-                square:AddWorldInventoryItem(item, 0, 0, 0)
+    if SandboxVars.StarterKit or ProfessionFramework.AlwaysUseStartingKits then
+        if ptable.inventory then
+            for item, count in pairs(ptable.inventory) do
+                if getScriptManager():FindItem(item) then
+                    inventory:AddItems(item, count)
+                end
             end
         end
-        ISInventoryPage.dirtyUI()
+        -- add items to the floor
+        if ptable.square then
+            for item, count in pairs(ptable.square) do
+                if getScriptManager():FindItem(item) then
+                    for i=1, count do
+                        square:AddWorldInventoryItem(item, 0, 0, 0)
+                    end
+                end
+            end
+            ISInventoryPage.dirtyUI()
+        end
     end
     -- run any event code
     if ptable.OnNewGame then
