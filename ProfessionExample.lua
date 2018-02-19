@@ -32,6 +32,7 @@ ProfessionFramework.addProfession('sniper', {
     square = {}, -- items to drop on the floor on start, no items, so this line can be delete
     OnNewGame = function(player, square, profession) -- function to run OnNewGame event
         local item = player:getInventory():FindAndReturn("ORGM.SR25")
+        if not item then return end
         item:attachWeaponPart(InventoryItemFactory.CreateItem("ORGM.8xScope"))
         item:attachWeaponPart(InventoryItemFactory.CreateItem("ORGM.Rifsling"))
     end,
@@ -64,6 +65,7 @@ ProfessionFramework.addProfession('parkranger', {
     },
     OnNewGame = function(player, square, profession)
         local item = player:getInventory():FindAndReturn("ORGM.LENo4")
+        if not item then return end
         item:attachWeaponPart(InventoryItemFactory.CreateItem("ORGM.2xScope"))
         item:attachWeaponPart(InventoryItemFactory.CreateItem("ORGM.Rifsling"))
     end,
@@ -79,6 +81,7 @@ ProfessionFramework.addProfession('chef', {
     },
     OnNewGame = function(player, square, profession)
         local knives = player:getInventory():FindAll("Base.KitchenKnife")
+        if not knives then return end
         for i=1,knives:size() do
             local knife = knives:get(i-1)
             knife:setName("Fancy Kitchen Knife")
