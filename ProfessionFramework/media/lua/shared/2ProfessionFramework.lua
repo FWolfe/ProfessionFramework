@@ -4,20 +4,51 @@ ProfessionFramework = {
     AUTHOR = "Fenris_Wolf",
     Professions = { },
     TraitSwaps = { },
+    AlwaysUseStartingKits = true,
 }
 
 ProfessionFramework.addProfession = function(type, details) 
     ProfessionFramework.Professions[type] = details
 end
+
+
+--[[ ProfessionFramework.getProfession(type)
+
+    type = string name of a profession
+    
+    returns the profession details
+
+]]
 ProfessionFramework.getProfession = function(type)
     return ProfessionFramework.Professions[type]
 end
 
 
+--[[ ProfessionFramework.removeDefaultProfessions()
+    
+    Removes the base game professions. Effectively stops them from being registered
+    with the ProfessionFactory class.
+    
+    This MUST be called before the OnGameBoot events are triggered.
+    
+]]
+ProfessionFramework.removeDefaultProfessions = function()
+    print("ProfessionFramework: Removing default professions, as requested.")
+    Events.OnGameBoot.Remove(BaseGameCharacterDetails.DoProfessions)
+end
 
--- We need to set all 'special traits' so they can be used as profession traits. This creates traits such as Brave2,
--- sets the mutually exclusive so a player with brave2 cant select brave or cowardly, and flags brave2 to be replaced
--- with the real brave with the OnNewGame event so it will function properly.
+
+
+--[[  ProfessionFramework.doTraits()
+
+    Sets up all 'special traits' so they can be used as profession traits. 
+    This creates traits such as Brave2, sets the mutually exclusive so a player with brave2 cant 
+    select brave or cowardly, and flags brave2 to be replaced with the real brave with the OnNewGame 
+    event so it will function properly.
+    
+    This function is called automatically with the OnGameBoot event.
+
+]]
 ProfessionFramework.doTraits = function()
     local sleepOK = (isClient() or isServer()) and getServerOptions():getBoolean("SleepAllowed") and getServerOptions():getBoolean("SleepNeeded")
 
@@ -250,27 +281,29 @@ ProfessionFramework.doTraits = function()
     for trait, _ in pairs(ProfessionFramework.TraitSwaps) do
         BaseGameCharacterDetails.SetTraitDescription(TraitFactory.getTrait(trait))
     end
-	--local traitList = TraitFactory.getTraits()
-	--for i=1,traitList:size() do
-	--	local trait = traitList:get(i-1)
-	--	BaseGameCharacterDetails.SetTraitDescription(trait)
-	--end
-
 end
 
+
+--[[  ProfessionFramework.doProfessions()
+    
+    Sets up all professions added with the ProfessionFramework.addProfession() function.
+    If a profession already exists with the ProfessionFactory (default game professions) it edits the
+    values, if not it registers the new profession.
+    
+    This function is called automatically with the OnGameBoot event.
+
+]]
 ProfessionFramework.doProfessions = function()
     for ptype, details in pairs(ProfessionFramework.Professions) do
-        print("Adjusting Profession: "..ptype)
-        local cost = details.cost or 0
-        local textname = details.name or "Unknown"
-        local icon = details.icon or ""
 
         local this = ProfessionFactory.getProfession(ptype)
         if this then
+            print("ProfessionFramework: Adjusting Profession: "..ptype)
             this:setName((details.name or this:getName()))
             this:setCost((details.cost or this:getCost()))
             this:setIconPath((details.icon or this:getIconPath()))
         else
+            print("ProfessionFramework: Adding Profession: "..ptype)
             this = ProfessionFactory.addProfession(ptype, (details.name or "Unknown"), (details.icon or ""), (details.cost or 0))
         end
         -----------
