@@ -7,6 +7,9 @@ ProfessionFramework = {
     AlwaysUseStartingKits = true,
 }
 
+local oldDoTraits = BaseGameCharacterDetails.DoTraits
+local oldDoProfessions = BaseGameCharacterDetails.DoProfessions
+
 ProfessionFramework.addProfession = function(type, details) 
     ProfessionFramework.Professions[type] = details
 end
@@ -50,6 +53,7 @@ end
 
 ]]
 ProfessionFramework.doTraits = function()
+    oldDoTraits()
     local sleepOK = (isClient() or isServer()) and getServerOptions():getBoolean("SleepAllowed") and getServerOptions():getBoolean("SleepNeeded")
 
     TraitFactory.addTrait("Brave2", getText("UI_trait_brave"), 0, getText("UI_trait_bravedesc"), true)
@@ -294,6 +298,7 @@ end
 
 ]]
 ProfessionFramework.doProfessions = function()
+    oldDoProfessions()
     for ptype, details in pairs(ProfessionFramework.Professions) do
 
         local this = ProfessionFactory.getProfession(ptype)
@@ -329,6 +334,12 @@ ProfessionFramework.doProfessions = function()
         BaseGameCharacterDetails.SetProfessionDescription(this)
     end
 end
+
+BaseGameCharacterDetails.DoTraits = ProfessionFramework.doTraits
+BaseGameCharacterDetails.DoProfessions = ProfessionFramework.doProfessions
+
+Events.OnGameBoot.Remove(oldDoTraits)
+Events.OnGameBoot.Remove(oldDoProfessions)
 
 Events.OnGameBoot.Add(ProfessionFramework.doTraits)
 Events.OnGameBoot.Add(ProfessionFramework.doProfessions)
