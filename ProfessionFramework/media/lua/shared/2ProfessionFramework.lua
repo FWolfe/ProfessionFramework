@@ -2,7 +2,10 @@
 ProfessionFramework = {
     VERSION = "1.00-alpha",
     AUTHOR = "Fenris_Wolf",
-    Professions = { },
+    RemoveDefaultProfessions = false,
+    RemoveDefaultTraits = false,
+    Professions = { }, -- table of registered professions.
+    Traits = { }, -- table of registered traits.
     TraitSwaps = { },
     AlwaysUseStartingKits = true,
 }
@@ -298,7 +301,7 @@ end
 
 ]]
 ProfessionFramework.doProfessions = function()
-    oldDoProfessions()
+    if not ProfessionFramework.RemoveDefaultProfessions then oldDoProfessions() end
     for ptype, details in pairs(ProfessionFramework.Professions) do
 
         local this = ProfessionFactory.getProfession(ptype)
@@ -335,12 +338,18 @@ ProfessionFramework.doProfessions = function()
     end
 end
 
+-- overwrite the old functions, this is required to when you create a new character on
+-- a server after you've died.
+-- NOTE: we need to check after all mods have loaded to see if another mod has overwritten
+-- this again, for compatibility!
 BaseGameCharacterDetails.DoTraits = ProfessionFramework.doTraits
 BaseGameCharacterDetails.DoProfessions = ProfessionFramework.doProfessions
 
+-- remove the old functions from the events
 Events.OnGameBoot.Remove(oldDoTraits)
 Events.OnGameBoot.Remove(oldDoProfessions)
 
+-- add the new functions to events. 
 Events.OnGameBoot.Add(ProfessionFramework.doTraits)
 Events.OnGameBoot.Add(ProfessionFramework.doProfessions)
 
