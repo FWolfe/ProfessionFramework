@@ -30,20 +30,6 @@ ProfessionFramework.getProfession = function(type)
 end
 
 
---[[ ProfessionFramework.removeDefaultProfessions()
-    
-    Removes the base game professions. Effectively stops them from being registered
-    with the ProfessionFactory class.
-    
-    This MUST be called before the OnGameBoot events are triggered.
-    
-]]
-ProfessionFramework.removeDefaultProfessions = function()
-    print("ProfessionFramework: Removing default professions, as requested.")
-    Events.OnGameBoot.Remove(BaseGameCharacterDetails.DoProfessions)
-end
-
-
 
 --[[  ProfessionFramework.doTraits()
 
@@ -326,7 +312,7 @@ ProfessionFramework.doProfessions = function()
                 if not current:contains(trait) then this:addFreeTrait(trait) end
             end
         end
-        if details.recipies then
+        if details.recipes then
             -- this:setFreeRecipies(details.recipes)
             local free = this:getFreeRecipes()
             for _, recipe in ipairs(details.recipes) do
