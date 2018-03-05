@@ -69,7 +69,16 @@ end
     type = string name of a trait
     details = a table containing the trait details. Valid key/value pairs are:
         cost = integer value, the number of points this trait costs.
+        name = string name of the trait (or of the translation entry)
+        description = string description of the trait (or of the translation entry)
         xp = a table containing a list of perks, and the experience levels for each.
+        removeInMP = true|false. Is this trait only for single player mode
+        requiresSleepEnabled = true|false. Sleeping must be enabled in sandbox settings to select.
+        profession = true|false. Is this trait a 'profession trait' (non-selectable)
+        swap = a string name of another trait to swap this one with OnNewGame. This should only really
+            be used for the 'special' traits.
+        exclude = a table containing a list of traits this one should be mutually exclusive with.
+        
         inventory = a table containing items this trait starts with. Keys are the
             item name, values are the count.
         square =  a table containing items this trait starts with (on the ground). 
@@ -77,7 +86,8 @@ end
         OnNewGame = a function to be called when the character is created if it has this 
             trait. Arguments are: a IsoPlayer object, a IsoGridSquare object, and the string 
             trait name.
-        OnGameStart = 
+        OnGameStart = function to be triggered OnGameStart if the player has this trait. Arguments are:
+            the string trait name.
 ]]
 ProfessionFramework.addTrait = function(type, details)
     ProfessionFramework.Traits[type] = details
@@ -205,9 +215,10 @@ end
 
 --[[ ProfessionFramework.addStartingKit(player, square, details)
 
-    Adds starting kits for any profession and traits
+    Adds starting kits for any profession and traits. This function is called automatically
+    OnNewGame.
+    
 ]]
-
 ProfessionFramework.addStartingKit = function(player, square, details)
     local inventory = player:getInventory()
     if SandboxVars.StarterKit or ProfessionFramework.AlwaysUseStartingKits then
