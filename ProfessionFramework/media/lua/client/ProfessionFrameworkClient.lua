@@ -25,6 +25,11 @@ Events.OnNewGame.Add(function(player, square)
             player:getTraits():remove(trait)
             player:getTraits():add(details.swap)
         end
+        if details.add then
+            for _, trait in ipairs(details.add) do
+                if not player:HasTrait(trait) then player:getTraits():add(trait) end
+            end
+        end
         if details.OnNewGame then
             -- run any event code
             details.OnNewGame(player, square, trait)
