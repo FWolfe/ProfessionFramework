@@ -384,3 +384,12 @@ addTrait("Asthmatic2", {
     exclude = {"Asthmatic"},
     swap = "Asthmatic",
 })
+
+addTrait("Herbalist2", {
+    name = "UI_trait_Herbalist",
+    description = "UI_trait_HerbalistDesc",
+    profession = true,
+    recipes = {"Herbalist"},
+    exclude = {"Herbalist"},
+    swap = "Herbalist",
+})
