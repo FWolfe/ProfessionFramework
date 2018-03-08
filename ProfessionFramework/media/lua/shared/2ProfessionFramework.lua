@@ -150,6 +150,13 @@ ProfessionFramework.doTraits = function()
                 this:addXPBoost(perk, bonus)
             end
         end
+        if details.recipes then
+            -- this:setFreeRecipies(details.recipes)
+            local free = this:getFreeRecipes()
+            for _, recipe in ipairs(details.recipes) do
+                free:add(recipe)
+            end
+        end
     end
     for ttype, details in pairs(ProfessionFramework.Traits) do
         local exclude = details.exclude or {}
