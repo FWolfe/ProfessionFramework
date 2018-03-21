@@ -393,3 +393,20 @@ addTrait("Herbalist2", {
     exclude = {"Herbalist"},
     swap = "Herbalist",
 })
+
+
+addTrait("Handy2", {
+    name = "UI_trait_handy",
+    description = "UI_trait_handydesc",
+    profession = true,
+    exclude = {"Handy2"},
+    swap = "Handy",
+})
+
+addTrait("Jogger2", {
+    name = "UI_trait_Jogger",
+    description = "UI_trait_JoggerDesc",
+    profession = true,
+    exclude = {"Jogger2"},
+    swap = "Jogger",
+})
