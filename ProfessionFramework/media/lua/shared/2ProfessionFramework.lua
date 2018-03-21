@@ -1,6 +1,6 @@
 
 ProfessionFramework = {
-    VERSION = "1.00-alpha",
+    VERSION = "1.00-stable",
     AUTHOR = "Fenris_Wolf",
     Professions = { }, -- table of registered professions.
     Traits = { }, -- table of registered traits.
@@ -78,6 +78,7 @@ end
         swap = a string name of another trait to swap this one with OnNewGame. This should only really
             be used for the 'special' traits.
         exclude = a table containing a list of traits this one should be mutually exclusive with.
+        add = a table of additional traits to add OnNewGame
         
         inventory = a table containing items this trait starts with. Keys are the
             item name, values are the count.
@@ -194,7 +195,7 @@ ProfessionFramework.doProfessions = function()
             this:setIconPath((details.icon or this:getIconPath()))
         else
             ProfessionFramework.log(ProfessionFramework.INFO, "Adding Profession "..ptype)
-            this = ProfessionFactory.addProfession(ptype, (details.name or "Unknown"), (details.icon or ""), (details.cost or 0))
+            this = ProfessionFactory.addProfession(ptype, (getText(details.name) or "Unknown"), (details.icon or ""), (details.cost or 0))
         end
         -----------
         if details.xp then
