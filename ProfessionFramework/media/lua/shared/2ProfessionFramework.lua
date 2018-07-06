@@ -8,7 +8,15 @@ ProfessionFramework = {
     RemoveDefaultTraits = false,
     AlwaysUseStartingKits = true,
     LogLevel = 2,
-    
+
+    -- Spawn Regions
+    regions = {
+        muldraugh = "Muldraugh, KY",
+        westpoint = "West Point, KY",
+        rosewood = "Rosewood, KY",
+        riverside = "Riverside, KY",
+    },
+        
     -- logging constants
     ERROR = 0,
     WARN = 1,
