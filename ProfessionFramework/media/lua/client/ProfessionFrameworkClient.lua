@@ -48,16 +48,3 @@ Events.OnNewGame.Add(function(player, square)
         details.OnNewGame(player, square, profession)
     end
 end)
-
-Events.OnSpawnRegionsLoaded.Add(function(regions)
-    for profession, details in pairs(ProfessionFramework.Professions) do
-        if details.spawns then
-            for i = 1, #regions do
-                if details.spawns[_regions[i].name] then
-                    ProfessionFramework.log(ProfessionFramework.INFO, "Injecting Custom Spawn Regions for " .. profession .. " in " .. regions[i].name)
-                    _regions[i].points[profession] = details.spawns[_regions[i].name];
-                end
-            end
-        end
-    end
-end)

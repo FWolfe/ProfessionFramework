@@ -251,6 +251,19 @@ ProfessionFramework.addStartingKit = function(player, square, details)
     end
 end
 
+-- Inject Custom Spawn Locations for both Client and Server
+Events.OnSpawnRegionsLoaded.Add(function(regions)
+    for profession, details in pairs(ProfessionFramework.Professions) do
+        if details.spawns then
+            for i = 1, #regions do
+                if details.spawns[_regions[i].name] then
+                    ProfessionFramework.log(ProfessionFramework.INFO, "Injecting Custom Spawn Regions for " .. profession .. " in " .. regions[i].name)
+                    _regions[i].points[profession] = details.spawns[_regions[i].name];
+                end
+            end
+        end
+    end
+end)
 
 -- overwrite the old functions, this is required to when you create a new character on
 -- a server after you've died.
