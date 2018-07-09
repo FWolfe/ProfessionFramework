@@ -258,7 +258,7 @@ Events.OnSpawnRegionsLoaded.Add(function(regions)
             for _, region in ipairs(regions) do
                 if details.spawns[region.name] then
                     ProfessionFramework.log(ProfessionFramework.INFO, "Injecting Custom Spawn Regions for " .. profession .. " in " .. region.name)
-                    region.points[profession] = details.spawns[region.name]
+                    regions.points[profession] = details.spawns[region.name]
                 end
             end
         end
