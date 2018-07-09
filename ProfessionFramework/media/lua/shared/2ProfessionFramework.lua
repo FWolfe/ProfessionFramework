@@ -8,7 +8,7 @@ ProfessionFramework = {
     RemoveDefaultTraits = false,
     AlwaysUseStartingKits = true,
     LogLevel = 2,
-        
+
     -- logging constants
     ERROR = 0,
     WARN = 1,
@@ -29,7 +29,7 @@ local oldDoProfessions = BaseGameCharacterDetails.DoProfessions
 --[[ ProfessionFramework.addProfession(type, details)
 
     Registers a profession with the profession framework. arguments are:
-    
+
     type = string name of a profession
     details = a table containing the profession details. Valid key/value pairs are:
         cost = integer value, the number of points this profession starts with.
@@ -38,14 +38,14 @@ local oldDoProfessions = BaseGameCharacterDetails.DoProfessions
         recipes = a table containing a list of recipes this profession starts with.
         inventory = a table containing items the profession starts with. Keys are the
             item name, values are the count.
-        square =  a table containing items the profession starts with (on the ground). 
+        square =  a table containing items the profession starts with (on the ground).
             Keys are the item name, values are the count.
         OnNewGame = a function to be called when the character is created. Arguments are
             a IsoPlayer object, a IsoGridSquare object, and the string profession name.
-    
+
 
 ]]
-ProfessionFramework.addProfession = function(type, details) 
+ProfessionFramework.addProfession = function(type, details)
     ProfessionFramework.Professions[type] = details
 end
 
@@ -53,7 +53,7 @@ end
 --[[ ProfessionFramework.getProfession(type)
 
     type = string name of a profession
-    
+
     returns the profession details
 
 ]]
@@ -79,13 +79,13 @@ end
             be used for the 'special' traits.
         exclude = a table containing a list of traits this one should be mutually exclusive with.
         add = a table of additional traits to add OnNewGame
-        
+
         inventory = a table containing items this trait starts with. Keys are the
             item name, values are the count.
-        square =  a table containing items this trait starts with (on the ground). 
+        square =  a table containing items this trait starts with (on the ground).
             Keys are the item name, values are the count.
-        OnNewGame = a function to be called when the character is created if it has this 
-            trait. Arguments are: a IsoPlayer object, a IsoGridSquare object, and the string 
+        OnNewGame = a function to be called when the character is created if it has this
+            trait. Arguments are: a IsoPlayer object, a IsoGridSquare object, and the string
             trait name.
         OnGameStart = function to be triggered OnGameStart if the player has this trait. Arguments are:
             the string trait name.
@@ -98,7 +98,7 @@ end
 --[[ ProfessionFramework.getTrait(type)
 
     type = string name of a trait
-    
+
     returns the trait details
 
 ]]
@@ -109,11 +109,11 @@ end
 
 --[[  ProfessionFramework.doTraits()
 
-    Sets up all 'special traits' so they can be used as profession traits. 
-    This creates traits such as Brave2, sets the mutually exclusive so a player with brave2 cant 
-    select brave or cowardly, and flags brave2 to be replaced with the real brave with the OnNewGame 
+    Sets up all 'special traits' so they can be used as profession traits.
+    This creates traits such as Brave2, sets the mutually exclusive so a player with brave2 cant
+    select brave or cowardly, and flags brave2 to be replaced with the real brave with the OnNewGame
     event so it will function properly.
-    
+
     This function is called automatically with the OnGameBoot event.
 
 ]]
@@ -127,7 +127,7 @@ ProfessionFramework.doTraits = function()
         local this = TraitFactory.getTrait(ttype)
         if this then
             ProfessionFramework.log(ProfessionFramework.INFO, "Adjusting Trait "..ttype)
-            
+
             -- we cant adjust some things on already existing traits, warn if we were asked to
             if details.cost then
                 ProfessionFramework.log(ProfessionFramework.WARN, "Cost can not be adjusted for already existing trait "..ttype)
@@ -141,7 +141,7 @@ ProfessionFramework.doTraits = function()
             if details.profession then
                 ProfessionFramework.log(ProfessionFramework.WARN, "Profession flag can not be adjusted for already existing trait "..ttype)
             end
-            
+
         else
             ProfessionFramework.log(ProfessionFramework.INFO, "Adding Trait "..ttype)
             this = TraitFactory.addTrait(ttype, getText(details.name), (details.cost or 0), getText(details.description), (details.profession or false), remove)
@@ -175,11 +175,11 @@ end
 
 
 --[[  ProfessionFramework.doProfessions()
-    
+
     Sets up all professions added with the ProfessionFramework.addProfession() function.
     If a profession already exists with the ProfessionFactory (default game professions) it edits the
     values, if not it registers the new profession.
-    
+
     This function is called automatically with the OnGameBoot event.
 
 ]]
@@ -216,7 +216,7 @@ ProfessionFramework.doProfessions = function()
                 free:add(recipe)
             end
         end
-        
+
         BaseGameCharacterDetails.SetProfessionDescription(this)
     end
 end
@@ -225,7 +225,7 @@ end
 
     Adds starting kits for any profession and traits. This function is called automatically
     OnNewGame.
-    
+
 ]]
 ProfessionFramework.addStartingKit = function(player, square, details)
     local inventory = player:getInventory()
@@ -255,10 +255,10 @@ end
 Events.OnSpawnRegionsLoaded.Add(function(regions)
     for profession, details in pairs(ProfessionFramework.Professions) do
         if details.spawns then
-            for i = 1, #regions do
-                if details.spawns[_regions[i].name] then
-                    ProfessionFramework.log(ProfessionFramework.INFO, "Injecting Custom Spawn Regions for " .. profession .. " in " .. regions[i].name)
-                    _regions[i].points[profession] = details.spawns[_regions[i].name];
+            for _, region in ipairs(regions) do
+                if details.spawns[region.name] then
+                    ProfessionFramework.log(ProfessionFramework.INFO, "Injecting Custom Spawn Regions for " .. profession .. " in " .. region.name)
+                    regions.points[profession] = details.spawns[region.name]
                 end
             end
         end
@@ -276,7 +276,6 @@ BaseGameCharacterDetails.DoProfessions = ProfessionFramework.doProfessions
 Events.OnGameBoot.Remove(oldDoTraits)
 Events.OnGameBoot.Remove(oldDoProfessions)
 
--- add the new functions to events. 
+-- add the new functions to events.
 Events.OnGameBoot.Add(ProfessionFramework.doTraits)
 Events.OnGameBoot.Add(ProfessionFramework.doProfessions)
-
