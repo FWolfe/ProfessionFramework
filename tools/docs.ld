@@ -1,0 +1,10 @@
+readme = "../README.md"
+project = "Profession Framework"
+dir = "../docs"
+format = "discount"
+file = { "../media/lua/" }
+merge = true
+description = "my short desc"
+full_description = "this is the long description"
+title = "ProfessionFramework API Reference"
+examples = "../examples/"

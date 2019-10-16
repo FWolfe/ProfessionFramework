@@ -1,0 +1,706 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>ProfessionFramework API Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Profession Framework</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+
+
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/default_professions.lua.html">default_professions.lua</a></li>
+  <li><strong>default_traits.lua</strong></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/ProfessionFramework.html">ProfessionFramework</a></li>
+</ul>
+<h2>Scripts</h2>
+<ul class="nowrap">
+  <li><a href="../scripts/ProfessionFrameworkClient.html">ProfessionFrameworkClient</a></li>
+  <li><a href="../scripts/3ProfessionTraits.html">3ProfessionTraits</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+    <h2>default_traits.lua</h2>
+<pre>
+<span class="comment">--[[- Vanilla traits, reimplemented in Profession Framework style.
+
+Note the data in here is from BaseGameCharacterDetails.DoTraits
+in MainCreationMethods.lua.
+
+Any of these table entries can be retrieved and modified using:
+
+local trait = ProfessionFramework.getTrait(name)
+
+]]</span>
+
+<span class="comment">-- skip this file unless UsePFTraitVersions is true
+</span><span class="keyword">if</span> <span class="keyword">not</span> ProfessionFramework.UsePFTraitVersions <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">end</span>
+
+<span class="keyword">local</span> addTrait = ProfessionFramework.addTrait
+
+addTrait(<span class="string">"Axeman"</span>, {
+    name = <span class="string">"UI_trait_axeman"</span>,
+    description = <span class="string">"UI_trait_axemandesc"</span>,
+    profession = <span class="keyword">true</span>,
+})
+
+addTrait(<span class="string">"Handy"</span>, {
+    name = <span class="string">"UI_trait_handy"</span>,
+    description = <span class="string">"UI_trait_handydesc"</span>,
+    cost = <span class="number">8</span>,
+    xp = {
+        [<span class="string">"Perks.Maintenance"</span>] = <span class="number">1</span>,
+        [<span class="string">"Perks.Woodwork"</span>] = <span class="number">1</span>
+    }
+})
+
+addTrait(<span class="string">"SpeedDemon"</span>, {
+    name = <span class="string">"UI_trait_SpeedDemon"</span>,
+    description = <span class="string">"UI_trait_SpeedDemonDesc"</span>,
+    cost = <span class="number">1</span>,
+    exclude = { <span class="string">"SundayDriver"</span> }
+})
+
+addTrait(<span class="string">"SundayDriver"</span>, {
+    name = <span class="string">"UI_trait_SundayDriver"</span>,
+    description = <span class="string">"UI_trait_SundayDriverDesc"</span>,
+    cost = -<span class="number">1</span>,
+})
+
+addTrait(<span class="string">"Brave"</span>, {
+    name = <span class="string">"UI_trait_brave"</span>,
+    description = <span class="string">"UI_trait_bravedesc"</span>,
+    cost = <span class="number">4</span>,
+    exclude = { <span class="string">"Cowardly"</span> }
+})
+
+addTrait(<span class="string">"Cowardly"</span>, {
+    name = <span class="string">"UI_trait_cowardly"</span>,
+    description = <span class="string">"UI_trait_cowardlydesc"</span>,
+    cost = -<span class="number">2</span>,
+})
+
+addTrait(<span class="string">"Clumsy"</span>, {
+    name = <span class="string">"UI_trait_clumsy"</span>,
+    description = <span class="string">"UI_trait_clumsydesc"</span>,
+    cost = -<span class="number">2</span>,
+    exclude = { <span class="string">"Graceful"</span> },
+})
+
+addTrait(<span class="string">"Graceful"</span>, {
+    name = <span class="string">"UI_trait_graceful"</span>,
+    description = <span class="string">"UI_trait_gracefuldesc"</span>,
+    cost = <span class="number">4</span>,
+})
+
+addTrait(<span class="string">"Hypercondriac"</span>, {
+    name = <span class="string">"UI_trait_hypochon"</span>,
+    description = <span class="string">"UI_trait_hypochondesc"</span>,
+    cost = -<span class="number">2</span>,
+})
+
+addTrait(<span class="string">"ShortSighted"</span>, {
+    name = <span class="string">"UI_trait_shortsigh"</span>,
+    description = <span class="string">"UI_trait_shortsighdesc"</span>,
+    cost = -<span class="number">2</span>,
+    exclude = { <span class="string">"EagleEyed"</span> }
+})
+
+addTrait(<span class="string">"HardOfHearing"</span>, {
+    name = <span class="string">"UI_trait_hardhear"</span>,
+    description = <span class="string">"UI_trait_hardheardesc"</span>,
+    cost = -<span class="number">2</span>,
+    exclude = { <span class="string">"KeenHearing"</span> }
+})
+
+addTrait(<span class="string">"Deaf"</span>, {
+    name = <span class="string">"UI_trait_deaf"</span>,
+    description = <span class="string">"UI_trait_deafdesc"</span>,
+    cost = -<span class="number">12</span>,
+    exclude = { <span class="string">"HardOfHearing"</span>, <span class="string">"KeenHearing"</span> }
+})
+
+addTrait(<span class="string">"KeenHearing"</span>, {
+    name = <span class="string">"UI_trait_keenhearing"</span>,
+    description = <span class="string">"UI_trait_keenhearingdesc"</span>,
+    cost = <span class="number">6</span>,
+})
+
+addTrait(<span class="string">"EagleEyed"</span>, {
+    name = <span class="string">"UI_trait_eagleeyed"</span>,
+    description = <span class="string">"UI_trait_eagleeyeddesc"</span>,
+    cost = <span class="number">6</span>,
+})
+
+addTrait(<span class="string">"HeartyAppitite"</span>, {
+    name = <span class="string">"UI_trait_heartyappetite"</span>,
+    description = <span class="string">"UI_trait_heartyappetitedesc"</span>,
+    cost = -<span class="number">4</span>,
+    exclude = { <span class="string">"LightEater"</span> }
+})
+
+addTrait(<span class="string">"LightEater"</span>, {
+    name = <span class="string">"UI_trait_lighteater"</span>,
+    description = <span class="string">"UI_trait_lighteaterdesc"</span>,
+    cost = <span class="number">4</span>,
+})
+
+addTrait(<span class="string">"ThickSkinned"</span>, {
+    name = <span class="string">"UI_trait_thickskinned"</span>,
+    description = <span class="string">"UI_trait_thickskinneddesc"</span>,
+    cost = -<span class="number">6</span>,
+    exclude = { <span class="string">"Thinskinned"</span> }
+})
+
+addTrait(<span class="string">"Unfit"</span>, {
+    name = <span class="string">"UI_trait_unfit"</span>,
+    description = <span class="string">"UI_trait_unfitdesc"</span>,
+    cost = -<span class="number">10</span>,
+    xp = {
+        [Perks.Fitness] = -<span class="number">4</span>,
+    },
+    exclude = { <span class="string">"Out of Shape"</span> }
+})
+
+addTrait(<span class="string">"Out of Shape"</span>, {
+    name = <span class="string">"UI_trait_outofshape"</span>,
+    description = <span class="string">"UI_trait_outofshapedesc"</span>,
+    cost = -<span class="number">6</span>,
+    xp = {
+        [Perks.Fitness] = -<span class="number">2</span>,
+    }
+})
+
+addTrait(<span class="string">"Fit"</span>, {
+    name = <span class="string">"UI_trait_fit"</span>,
+    description = <span class="string">"UI_trait_fitdesc"</span>,
+    cost = <span class="number">6</span>,
+    xp = {
+        [Perks.Fitness] = <span class="number">2</span>,
+    },
+    exclude = { <span class="string">"Out of Shape"</span>, <span class="string">"Unfit"</span>, <span class="string">"Overweight"</span>, <span class="string">"Obese"</span> }
+})
+
+addTrait(<span class="string">"Athletic"</span>, {
+    name = <span class="string">"UI_trait_athletic"</span>,
+    description = <span class="string">"UI_trait_athleticdesc"</span>,
+    cost = <span class="number">10</span>,
+    xp = {
+        [Perks.Fitness] = <span class="number">4</span>,
+    },
+    exclude = { <span class="string">"Overweight"</span>, <span class="string">"Fit"</span>, <span class="string">"Obese"</span>, <span class="string">"Out of Shape"</span>, <span class="string">"Unfit"</span> }
+})
+
+addTrait(<span class="string">"Nutritionist"</span>, {
+    name = <span class="string">"UI_trait_nutritionist"</span>,
+    description = <span class="string">"UI_trait_nutritionistdesc"</span>,
+    cost = <span class="number">4</span>,
+    exclude = { <span class="string">"Nutritionist2"</span> }
+})
+
+addTrait(<span class="string">"Nutritionist2"</span>, {
+    name = <span class="string">"UI_trait_nutritionist"</span>,
+    description = <span class="string">"UI_trait_nutritionistdesc"</span>,
+    profession = <span class="keyword">true</span>,
+})
+
+addTrait(<span class="string">"Emaciated"</span>, {
+    name = <span class="string">"UI_trait_emaciated"</span>,
+    description = <span class="string">"UI_trait_emaciateddesc"</span>,
+    cost = -<span class="number">10</span>,
+})
+
+addTrait(<span class="string">"Very Underweight"</span>, {
+    name = <span class="string">"UI_trait_veryunderweight"</span>,
+    description = <span class="string">"UI_trait_veryunderweightdesc"</span>,
+    cost = -<span class="number">10</span>,
+    exclude = { <span class="string">"Underweight"</span> }
+})
+
+addTrait(<span class="string">"Underweight"</span>, {
+    name = <span class="string">"UI_trait_underweight"</span>,
+    description = <span class="string">"UI_trait_underweightdesc"</span>,
+    cost = -<span class="number">6</span>,
+})
+
+addTrait(<span class="string">"Overweight"</span>, {
+    name = <span class="string">"UI_trait_overweight"</span>,
+    description = <span class="string">"UI_trait_overweightdesc"</span>,
+    cost = -<span class="number">6</span>,
+    exclude = { <span class="string">"Obese"</span>, <span class="string">"Underweight"</span> <span class="string">"Very Underweight"</span>, <span class="string">"Emaciated"</span> }
+})
+
+addTrait(<span class="string">"Obese"</span>, {
+    name = <span class="string">"UI_trait_obese"</span>,
+    description = <span class="string">"UI_trait_obesedesc"</span>,
+    cost = -<span class="number">10</span>,
+    exclude = { <span class="string">"Underweight"</span>, <span class="string">"Very Underweight"</span>, <span class="string">"Emaciated"</span> }
+})
+
+addTrait(<span class="string">"Strong"</span>, {
+    name = <span class="string">"UI_trait_strong"</span>,
+    description = <span class="string">"UI_trait_strongdesc"</span>,
+    cost = <span class="number">10</span>,
+    xp = {
+        [Perks.Strength] = <span class="number">4</span>
+    },
+    exclude = { <span class="string">"Feeble"</span>, <span class="string">"Stout"</span> }
+})
+
+addTrait(<span class="string">"Stout"</span>, {
+    name = <span class="string">"UI_trait_stout"</span>,
+    description = <span class="string">"UI_trait_stoutdesc"</span>,
+    cost = <span class="number">6</span>,
+    xp = {
+        [Perks.Strength] = <span class="number">2</span>
+    },
+    exclude = { <span class="string">"Feeble"</span> }
+})
+
+addTrait(<span class="string">"Weak"</span>, {
+    name = <span class="string">"UI_trait_weak"</span>,
+    description = <span class="string">"UI_trait_weakdesc"</span>,
+    cost = -<span class="number">10</span>,
+    xp = {
+        [Perks.Strength] = -<span class="number">5</span>
+    },
+    exclude = { <span class="string">"Strong"</span>, <span class="string">"Stout"</span>, <span class="string">"Feeble"</span> }
+})
+
+addTrait(<span class="string">"Feeble"</span>, {
+    name = <span class="string">"UI_trait_feeble"</span>,
+    description = <span class="string">"UI_trait_feebledesc"</span>,
+    cost = -<span class="number">6</span>,
+    xp = {
+        [Perks.Strength] = -<span class="number">2</span>
+    }
+})
+
+addTrait(<span class="string">"Resilient"</span>, {
+    name = <span class="string">"UI_trait_resilient"</span>,
+    description = <span class="string">"UI_trait_resilientdesc"</span>,
+    cost = <span class="number">4</span>,
+    exclude = { <span class="string">"ProneToIllness"</span> }
+})
+
+addTrait(<span class="string">"ProneToIllness"</span>, {
+    name = <span class="string">"UI_trait_pronetoillness"</span>,
+    description = <span class="string">"UI_trait_pronetoillnessdesc"</span>,
+    cost = -<span class="number">4</span>,
+})
+
+addTrait(<span class="string">"Agoraphobic"</span>, {
+    name = <span class="string">"UI_trait_agoraphobic"</span>,
+    description = <span class="string">"UI_trait_agoraphobicdesc"</span>,
+    cost = -<span class="number">4</span>,
+})
+
+addTrait(<span class="string">"Claustophobic"</span>, {
+    name = <span class="string">"UI_trait_claustro"</span>,
+    description = <span class="string">"UI_trait_claustrodesc"</span>,
+    cost = -<span class="number">4</span>,
+})
+
+addTrait(<span class="string">"Lucky"</span>, {
+    name = <span class="string">"UI_trait_lucky"</span>,
+    description = <span class="string">"UI_trait_luckydesc"</span>,
+    cost = <span class="number">4</span>,
+    exclude = { <span class="string">"Unlucky"</span> }
+})
+
+addTrait(<span class="string">"Unlucky"</span>, {
+    name = <span class="string">"UI_trait_unlucky"</span>,
+    description = <span class="string">"UI_trait_unluckydesc"</span>,
+    cost = -<span class="number">4</span>,
+})
+
+addTrait(<span class="string">"Marksman"</span>, {
+    name = <span class="string">"UI_trait_marksman"</span>,
+    description = <span class="string">"UI_trait_marksmandesc"</span>,
+    profession = <span class="keyword">true</span>,
+})
+
+addTrait(<span class="string">"NightOwl"</span>, {
+    name = <span class="string">"UI_trait_nightowl"</span>,
+    description = <span class="string">"UI_trait_nightowldesc"</span>,
+    profession = <span class="keyword">true</span>,
+})
+
+addTrait(<span class="string">"FastHealer"</span>, {
+    name = <span class="string">"UI_trait_FastHealer"</span>,
+    description = <span class="string">"UI_trait_FastHealerDesc"</span>,
+    cost = <span class="number">6</span>,
+    exlude = { <span class="string">"SlowHealer"</span> }
+})
+
+addTrait(<span class="string">"FastLearner"</span>, {
+    name = <span class="string">"UI_trait_FastLearner"</span>,
+    description = <span class="string">"UI_trait_FastLearnerDesc"</span>,
+    cost = <span class="number">6</span>,
+    exlude = { <span class="string">"SlowLearner"</span> }
+})
+
+addTrait(<span class="string">"FastReader"</span>, {
+    name = <span class="string">"UI_trait_FastReader"</span>,
+    description = <span class="string">"UI_trait_FastReaderDesc"</span>,
+    cost = <span class="number">2</span>,
+    exlude = { <span class="string">"SlowReader"</span> }
+})
+
+addTrait(<span class="string">"AdrenalineJunkie"</span>, {
+    name = <span class="string">"UI_trait_AdrenalineJunkie"</span>,
+    description = <span class="string">"UI_trait_AdrenalineJunkieDesc"</span>,
+    cost = <span class="number">8</span>,
+})
+
+addTrait(<span class="string">"Inconspicuous"</span>, {
+    name = <span class="string">"UI_trait_Inconspicuous"</span>,
+    description = <span class="string">"UI_trait_InconspicuousDesc"</span>,
+    cost = <span class="number">4</span>,
+})
+
+addTrait(<span class="string">"NeedsLessSleep"</span>, {
+    name = <span class="string">"UI_trait_LessSleep"</span>,
+    description = <span class="string">"UI_trait_LessSleepDesc"</span>,
+    cost = <span class="number">2</span>,
+    requiresSleepEnabled = <span class="keyword">true</span>,
+    exclude = { <span class="string">"NeedsMoreSleep"</span> }
+})
+
+addTrait(<span class="string">"Nightvision"</span>, {
+    name = <span class="string">"UI_trait_NightVision"</span>,
+    description = <span class="string">"UI_trait_NightVisionDesc"</span>,
+    cost = <span class="number">2</span>,
+})
+
+addTrait(<span class="string">"Organized"</span>, {
+    name = <span class="string">"UI_trait_Packmule"</span>,
+    description = <span class="string">"UI_trait_PackmuleDesc"</span>,
+    cost = <span class="number">6</span>,
+    exclude = { <span class="string">"Disorganized"</span> }
+})
+
+addTrait(<span class="string">"LowThirst"</span>, {
+    name = <span class="string">"UI_trait_LowThirst"</span>,
+    description = <span class="string">"UI_trait_LowThirstDesc"</span>,
+    cost = <span class="number">6</span>,
+    exclude = { <span class="string">"HighThirst"</span> }
+})
+
+addTrait(<span class="string">"FirstAid"</span>, {
+    name = <span class="string">"UI_trait_FirstAid"</span>,
+    description = <span class="string">"UI_trait_FirstAidDesc"</span>,
+    cost = <span class="number">4</span>,
+    xp = {
+        [Perks.Doctor] = <span class="number">1</span>
+    }
+})
+
+addTrait(<span class="string">"Fishing"</span>, {
+    name = <span class="string">"UI_trait_Fishing"</span>,
+    description = <span class="string">"UI_trait_FishingDesc"</span>,
+    cost = <span class="number">4</span>,
+    xp = {
+        [Perks.Fishing] = <span class="number">1</span>
+    },
+    recipes = { <span class="string">"Make Fishing Rod"</span>, <span class="string">"Fix Fishing Rod"</span> },
+})
+
+addTrait(<span class="string">"Gardener"</span>, {
+    name = <span class="string">"UI_trait_Gardener"</span>,
+    description = <span class="string">"UI_trait_GardenerDesc"</span>,
+    cost = <span class="number">4</span>,
+    xp = {
+        [Perks.Farming] = <span class="number">1</span>
+    },
+    recipes = { <span class="string">"Make Mildew Cure"</span>, <span class="string">"Make Flies Cure"</span> },
+})
+
+addTrait(<span class="string">"Jogger"</span>, {
+    name = <span class="string">"UI_trait_Jogger"</span>,
+    description = <span class="string">"UI_trait_JoggerDesc"</span>,
+    cost = <span class="number">4</span>,
+    xp = {
+        [Perks.Sprinting] = <span class="number">1</span>
+    }
+})
+
+addTrait(<span class="string">"SlowHealer"</span>, {
+    name = <span class="string">"UI_trait_SlowHealer"</span>,
+    description = <span class="string">"UI_trait_SlowHealerDesc"</span>,
+    cost = -<span class="number">6</span>,
+})
+
+addTrait(<span class="string">"SlowLearner"</span>, {
+    name = <span class="string">"UI_trait_SlowLearner"</span>,
+    description = <span class="string">"UI_trait_SlowHealerDesc"</span>,
+    cost = -<span class="number">6</span>,
+})
+
+addTrait(<span class="string">"SlowReader"</span>, {
+    name = <span class="string">"UI_trait_SlowReader"</span>,
+    description = <span class="string">"UI_trait_SlowReaderDesc"</span>,
+    cost = -<span class="number">2</span>,
+})
+
+addTrait(<span class="string">"NeedsMoreSleep"</span>, {
+    name = <span class="string">"UI_trait_MoreSleep"</span>,
+    description = <span class="string">"UI_trait_MoreSleepDesc"</span>,
+    cost = -<span class="number">4</span>,
+    requiresSleepEnabled = <span class="keyword">true</span>,
+})
+
+addTrait(<span class="string">"Conspicuous"</span>, {
+    name = <span class="string">"UI_trait_Conspicuous"</span>,
+    description = <span class="string">"UI_trait_ConspicuousDesc"</span>,
+    cost = -<span class="number">4</span>,
+    exclude = { <span class="string">"Inconspicuous"</span> }
+})
+
+addTrait(<span class="string">"Disorganized"</span>, {
+    name = <span class="string">"UI_trait_Disorganized"</span>,
+    description = <span class="string">"UI_trait_DisorganizedDesc"</span>,
+    cost = -<span class="number">4</span>,
+})
+
+addTrait(<span class="string">"HighThirst"</span>, {
+    name = <span class="string">"UI_trait_HighThirst"</span>,
+    description = <span class="string">"UI_trait_HighThirstDesc"</span>,
+    cost = -<span class="number">6</span>,
+})
+
+addTrait(<span class="string">"Illiterate"</span>, {
+    name = <span class="string">"UI_trait_Illiterate"</span>,
+    description = <span class="string">"UI_trait_IlliterateDesc"</span>,
+    cost = -<span class="number">8</span>,
+    exclude = { <span class="string">"SlowReader"</span>, <span class="string">"FastReader"</span> }
+})
+
+addTrait(<span class="string">"Insomniac"</span>, {
+    name = <span class="string">"UI_trait_Insomniac"</span>,
+    description = <span class="string">"UI_trait_InsomniacDesc"</span>,
+    cost = -<span class="number">6</span>,
+    requiresSleepEnabled = <span class="keyword">true</span>,
+})
+
+addTrait(<span class="string">"Pacifist"</span>, {
+    name = <span class="string">"UI_trait_Pacifist"</span>,
+    description = <span class="string">"UI_trait_PacifistDesc"</span>,
+    cost = -<span class="number">4</span>,
+})
+
+addTrait(<span class="string">"Thinskinned"</span>, {
+    name = <span class="string">"UI_trait_ThinSkinned"</span>,
+    description = <span class="string">"UI_trait_ThinSkinnedDesc"</span>,
+    cost = -<span class="number">6</span>,
+})
+
+addTrait(<span class="string">"Smoker"</span>, {
+    name = <span class="string">"UI_trait_Smoker"</span>,
+    description = <span class="string">"UI_trait_SmokerDesc"</span>,
+    cost = -<span class="number">4</span>,
+})
+
+addTrait(<span class="string">"Dextrous"</span>, {
+    name = <span class="string">"UI_trait_Dexterous"</span>,
+    description = <span class="string">"UI_trait_DexterousDesc"</span>,
+    cost = <span class="number">2</span>,
+    exclude = { <span class="string">"AllThumbs"</span> }
+})
+
+addTrait(<span class="string">"AllThumbs"</span>, {
+    name = <span class="string">"UI_trait_AllThumbs"</span>,
+    description = <span class="string">"UI_trait_AllThumbsDesc"</span>,
+    cost = -<span class="number">2</span>,
+})
+
+addTrait(<span class="string">"Desensitized"</span>, {
+    name = <span class="string">"UI_trait_Desensitized"</span>,
+    description = <span class="string">"UI_trait_DesensitizedDesc"</span>,
+    profession = <span class="keyword">true</span>,
+    exclude = { <span class="string">"Hemophobic"</span>, <span class="string">"Cowardly"</span>, <span class="string">"Brave"</span>, <span class="string">"Agoraphobic"</span>, <span class="string">"Claustophobic"</span>, <span class="string">"AdrenalineJunkie"</span> }
+})
+
+addTrait(<span class="string">"WeakStomach"</span>, {
+    name = <span class="string">"UI_trait_WeakStomach"</span>,
+    description = <span class="string">"UI_trait_WeakStomachDesc"</span>,
+    cost = -<span class="number">3</span>,
+})
+
+addTrait(<span class="string">"IronGut"</span>, {
+    name = <span class="string">"UI_trait_IronGut"</span>,
+    description = <span class="string">"UI_trait_IronGutDesc"</span>,
+    cost = <span class="number">3</span>,
+    exclude = { <span class="string">"WeakStomach"</span> }
+})
+
+addTrait(<span class="string">"Hemophobic"</span>, {
+    name = <span class="string">"UI_trait_Hemophobic"</span>,
+    description = <span class="string">"UI_trait_HemophobicDesc"</span>,
+    cost = -<span class="number">3</span>,
+})
+
+addTrait(<span class="string">"Asthmatic"</span>, {
+    name = <span class="string">"UI_trait_Asthmatic"</span>,
+    description = <span class="string">"UI_trait_AsthmaticDesc"</span>,
+    cost = -<span class="number">5</span>,
+})
+
+addTrait(<span class="string">"Cook"</span>, {
+    name = <span class="string">"UI_trait_Cook"</span>,
+    description = <span class="string">"UI_trait_CookDesc"</span>,
+    cost = <span class="number">6</span>,
+    xp = {
+        [Perks.Cooking] = <span class="number">2</span>,
+    },
+    recipes = { <span class="string">"Make Cake Batter"</span>, <span class="string">"Make Pie Dough"</span>, <span class="string">"Make Bread Dough"</span> },
+    exclude = { <span class="string">"Cook2"</span> }
+})
+
+addTrait(<span class="string">"Cook2"</span>, {
+    name = <span class="string">"UI_trait_Cook"</span>,
+    description = <span class="string">"UI_trait_Cook2Desc"</span>,
+    profession = <span class="keyword">true</span>,
+})
+
+addTrait(<span class="string">"Herbalist"</span>, {
+    name = <span class="string">"UI_trait_Herbalist"</span>,
+    description = <span class="string">"UI_trait_HerbalistDesc"</span>,
+    cost = <span class="number">6</span>,
+    recipes = { <span class="string">"Herbalist"</span> },
+})
+
+addTrait(<span class="string">"Brawler"</span>, {
+    name = <span class="string">"UI_trait_BarFighter"</span>,
+    description = <span class="string">"UI_trait_BarFighterDesc"</span>,
+    cost = <span class="number">6</span>,
+    xp = {
+        [Perks.Axe] = <span class="number">1</span>,
+        [Perks.Blunt] = <span class="number">1</span>,
+    },
+})
+
+addTrait(<span class="string">"Formerscout"</span>, {
+    name = <span class="string">"UI_trait_Scout"</span>,
+    description = <span class="string">"UI_trait_ScoutDesc"</span>,
+    cost = <span class="number">6</span>,
+    xp = {
+        [Perks.Doctor] = <span class="number">1</span>,
+        [Perks.PlantScavenging] = <span class="number">1</span>,
+    },
+})
+
+addTrait(<span class="string">"BaseballPlayer"</span>, {
+    name = <span class="string">"UI_trait_PlaysBaseball"</span>,
+    description = <span class="string">"UI_trait_PlaysBaseballDesc"</span>,
+    cost = <span class="number">4</span>,
+    xp = {
+        [Perks.Blunt] = <span class="number">1</span>,
+    },
+})
+
+addTrait(<span class="string">"Hiker"</span>, {
+    name = <span class="string">"UI_trait_Hiker"</span>,
+    description = <span class="string">"UI_trait_HikerDesc"</span>,
+    cost = <span class="number">6</span>,
+    xp = {
+        [Perks.PlantScavenging] = <span class="number">1</span>,
+        [Perks.Trapping] = <span class="number">1</span>,
+    },
+    recipes = { <span class="string">"Make Stick Trap"</span>, <span class="string">"Make Snare Trap"</span>, <span class="string">"Make Wooden Cage Trap"</span> },
+})
+
+addTrait(<span class="string">"Hunter"</span>, {
+    name = <span class="string">"UI_trait_Hunter"</span>,
+    description = <span class="string">"UI_trait_HunterDesc"</span>,
+    cost = <span class="number">8</span>,
+    xp = {
+        [Perks.Aiming] = <span class="number">1</span>,
+        [Perks.Trapping] = <span class="number">1</span>,
+        [Perks.Sneak] = <span class="number">1</span>
+    },
+    recipes = { <span class="string">"Make Stick Trap"</span>, <span class="string">"Make Snare Trap"</span>, <span class="string">"Make Wooden Cage Trap"</span>, <span class="string">"Make Trap Box"</span>, <span class="string">"Make Cage Trap"</span> },
+})
+
+
+addTrait(<span class="string">"Gymnast"</span>, {
+    name = <span class="string">"UI_trait_Gymnast"</span>,
+    description = <span class="string">"UI_trait_GymnastDesc"</span>,
+    cost = <span class="number">5</span>,
+    xp = {
+        [Perks.Lightfoot] = <span class="number">1</span>,
+        [Perks.Nimble] = <span class="number">1</span>,
+    },
+})
+
+addTrait(<span class="string">"Mechanics"</span>, {
+    name = <span class="string">"UI_trait_Mechanics"</span>,
+    description = <span class="string">"UI_trait_MechanicsDesc"</span>,
+    cost = <span class="number">5</span>,
+    xp = {
+        [Perks.Mechanics] = <span class="number">1</span>,
+    },
+    recipes = { <span class="string">"Basic Mechanics"</span>, <span class="string">"Intermediate Mechanics"</span> },
+    exclude = { <span class="string">"Mechanics2"</span> }
+})
+
+addTrait(<span class="string">"Mechanics2"</span>, {
+    name = <span class="string">"UI_trait_Mechanics"</span>,
+    description = <span class="string">"UI_trait_Mechanics2Desc"</span>,
+    profession = <span class="keyword">true</span>,
+})
+
+
+<span class="keyword">if</span> ProfessionFramework.COMPATIBILITY_MODE <span class="keyword">then</span>
+    <span class="comment">-- build 40
+</span>    <span class="comment">-- nothing to do!
+</span><span class="keyword">else</span>
+    <span class="comment">-- build 41+
+</span>    getTrait(<span class="string">"Hunter"</span>).xp[Perks.SmallBlade] = <span class="number">1</span>
+<span class="keyword">end</span></pre>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2019-09-29 22:02:33 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

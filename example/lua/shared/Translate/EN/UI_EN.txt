@@ -1,0 +1,7 @@
+UI_EN = {
+    UI_trait_nightmares = "Nightmares",
+    UI_trait_nightmaresdesc = "Occasionally suffers nightmares, waking from sleep in a full blown panic",
+ 
+    UI_prof_sniper = "Military Sniper",
+    UI_profdesc_sniper = "A expert marksman",
+}

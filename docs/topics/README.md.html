@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>ProfessionFramework API Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Profession Framework</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Changelog">Changelog </a></li>
+</ul>
+
+
+<h2>Topics</h2>
+<ul class="">
+  <li><strong>README</strong></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/ProfessionFramework.html">ProfessionFramework</a></li>
+</ul>
+<h2>Scripts</h2>
+<ul class="nowrap">
+  <li><a href="../scripts/ProfessionFrameworkClient.html">ProfessionFrameworkClient</a></li>
+  <li><a href="../scripts/3ProfessionTraits.html">3ProfessionTraits</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/default_professions.lua.html">default_professions.lua</a></li>
+  <li><a href="../examples/default_traits.lua.html">default_traits.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+    <h1>Profession Framework</h1>
+
+<p>A mod for Project Zomboid (by <strong>Fenris_Wolf</strong>)</p>
+
+<p>Adds a framework to simply adding additional professions and traits to project zomboid,
+and editing the default professions. As well as simplifying the modding process and letting
+professions have the &lsquo;special&rsquo; traits (brave, lucky, etc), it also  simplifies the processes
+of adding starting gear to various professions/traits.</p>
+
+<p>Be aware this mod adds no new professions or traits itself, it is merely a framework to assist modders.
+For maximum compatibility this mod should not included in your own mod, but instead listed as
+a requirement in your <code>mod.info</code> file.</p>
+
+<p>The advantages of using the Profession Framework vs the vanilla system:</p>
+
+<ul>
+<li><p>Cleaner syntax. Professions and traits are defined in a table, instead of potentially writing dozens of function calls.</p></li>
+<li><p>All aspects of professions are defined in a single spot (the table), instead of multiple files (initial setup, spawn points, clothing).</p></li>
+<li><p>Allows for adding customized starting kits including inventory and items on the ground, for both professions and traits.</p></li>
+</ul>
+
+
+<p>The vanilla game files define the Hunter trait and Park Ranger profession as:</p>
+
+<pre>
+<span class="comment">-- trait definition in MainCreationMethods.lua
+</span><span class="keyword">local</span> hunter = TraitFactory.addTrait(<span class="string">"Hunter"</span>, getText(<span class="string">"UI_trait_Hunter"</span>), <span class="number">8</span>, getText(<span class="string">"UI_trait_HunterDesc"</span>), <span class="keyword">false</span>);
+
+hunter:addXPBoost(Perks.Aiming, <span class="number">1</span>)
+hunter:addXPBoost(Perks.Trapping, <span class="number">1</span>)
+hunter:addXPBoost(Perks.Sneak, <span class="number">1</span>)
+hunter:addXPBoost(Perks.SmallBlade, <span class="number">1</span>)
+hunter:getFreeRecipes():add(<span class="string">"Make Stick Trap"</span>);
+hunter:getFreeRecipes():add(<span class="string">"Make Snare Trap"</span>);
+hunter:getFreeRecipes():add(<span class="string">"Make Wooden Cage Trap"</span>);
+hunter:getFreeRecipes():add(<span class="string">"Make Trap Box"</span>);
+hunter:getFreeRecipes():add(<span class="string">"Make Cage Trap"</span>);
+
+
+<span class="comment">-- profession definition in MainCreationMethods.lua
+</span><span class="keyword">local</span> parkranger = ProfessionFactory.addProfession(<span class="string">"parkranger"</span>, getText(<span class="string">"UI_prof_parkranger"</span>), <span class="string">"profession_parkranger2"</span>, -<span class="number">4</span>);
+parkranger:addXPBoost(Perks.Trapping, <span class="number">2</span>)
+parkranger:addXPBoost(Perks.Axe, <span class="number">1</span>)
+parkranger:addXPBoost(Perks.PlantScavenging, <span class="number">2</span>)
+parkranger:addXPBoost(Perks.Woodwork, <span class="number">1</span>)
+parkranger:getFreeRecipes():add(<span class="string">"Make Stick Trap"</span>);
+parkranger:getFreeRecipes():add(<span class="string">"Make Snare Trap"</span>);
+parkranger:getFreeRecipes():add(<span class="string">"Make Wooden Cage Trap"</span>);
+parkranger:getFreeRecipes():add(<span class="string">"Make Trap Box"</span>);
+parkranger:getFreeRecipes():add(<span class="string">"Make Cage Trap"</span>);
+
+<span class="comment">-- clothing options in ClothingSelectionDefinitions
+</span>ClothingSelectionDefinitions.parkranger = {
+    Female = {
+        Tshirt = {
+            items = {<span class="string">"Base.Tshirt_Profession_RangerBrown"</span>, <span class="string">"Base.Tshirt_Profession_RangerGreen"</span>},
+        },
+        Pants = {
+            items = {<span class="string">"Base.Trousers_Ranger"</span>},
+        },
+    },
+}
+
+<span class="comment">-- spawn locations in Muldraugh, KY/spawnpoints.lua
+</span><span class="comment">-- ... snip ...
+</span>    parkranger = {
+        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">6</span>+<span class="number">25</span>, posX=<span class="number">140</span>, posY=<span class="number">74</span>}, <span class="comment">-- Medium House near forest
+</span>        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">9</span>+<span class="number">25</span>, posX=<span class="number">62</span>, posY=<span class="number">47</span>}, <span class="comment">-- Medium house2
+</span>        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">116</span>, posY=<span class="number">232</span>}, <span class="comment">-- little house2
+</span>        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">3</span>, posY=<span class="number">173</span>}, <span class="comment">-- little house2
+</span>        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">118</span>, posY=<span class="number">229</span>}, <span class="comment">-- little house2
+</span>        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">6</span>+<span class="number">25</span>, posX=<span class="number">142</span>, posY=<span class="number">72</span>},
+        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">6</span>+<span class="number">25</span>, posX=<span class="number">151</span>, posY=<span class="number">190</span>},
+        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">6</span>+<span class="number">25</span>, posX=<span class="number">72</span>, posY=<span class="number">189</span>},
+        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">7</span>+<span class="number">25</span>, posX=<span class="number">176</span>, posY=<span class="number">185</span>},
+        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">7</span>+<span class="number">25</span>, posX=<span class="number">51</span>, posY=<span class="number">246</span>},
+        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">7</span>+<span class="number">25</span>, posX=<span class="number">54</span>, posY=<span class="number">294</span>},
+        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">108</span>, posY=<span class="number">94</span>},
+        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">84</span>, posY=<span class="number">259</span>},
+        {worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">123</span>, posY=<span class="number">196</span>},
+    },
+<span class="comment">-- ... snip ...
+</span>
+<span class="comment">-- -- spawn locations in spawnpoints.lua for other maps...
+</span><span class="comment">-- ... snip ...
+</span>
+</pre>
+
+
+<p>Using the Profession Framework, the same information would be defined like:</p>
+
+<pre>
+<span class="comment">-- add the trait
+</span>ProfessionFramework.addTrait(<span class="string">'Hunter'</span>, {
+    name = <span class="string">"UI_prof_parkranger"</span>,
+    description = <span class="string">"UI_trait_HunterDesc"</span>,
+    cost = <span class="number">8</span>,
+    xp = {
+        [Perks.Aiming] = <span class="number">1</span>,
+        [Perks.Trapping] = <span class="number">1</span>,
+        [Perks.Sneak] = <span class="number">1</span>,
+        [Perks.SmallBlade] = <span class="number">1</span>,
+    },
+    recipes = {<span class="string">"Make Stick Trap"</span>, <span class="string">"Make Snare Trap"</span>, <span class="string">"Make Wooden Cage Trap"</span>, <span class="string">"Make Trap Box"</span>, <span class="string">"Make Cage Trap"</span>},
+})
+
+<span class="comment">-- add the profession
+</span>ProfessionFramework.addProfession(<span class="string">'parkranger'</span>, {
+    icon = <span class="string">"profession_parkranger2"</span>,
+    name = <span class="string">"UI_prof_parkranger"</span>,
+    cost = -<span class="number">4</span>,
+    xp = {
+        [Perks.Trapping] = <span class="number">2</span>,
+        [Perks.Axe] = <span class="number">1</span>,
+        [Perks.PlantScavenging] = <span class="number">2</span>,
+        [Perks.Woodwork] = <span class="number">1</span>,
+    },
+    recipes = {<span class="string">"Make Stick Trap"</span>, <span class="string">"Make Snare Trap"</span>, <span class="string">"Make Wooden Cage Trap"</span>, <span class="string">"Make Trap Box"</span>, <span class="string">"Make Cage Trap"</span>},
+    clothing = {
+        Tshirt = {<span class="string">"Base.Tshirt_Profession_RangerBrown"</span>, <span class="string">"Base.Tshirt_Profession_RangerGreen"</span>},
+        Pants = {<span class="string">"Base.Trousers_Ranger"</span>},
+    }
+    spawn = {
+        <span class="string">"Muldraugh, KY"</span> = {
+            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">6</span>+<span class="number">25</span>, posX=<span class="number">140</span>, posY=<span class="number">74</span> }, <span class="comment">-- Medium House near forest
+</span>            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">9</span>+<span class="number">25</span>, posX=<span class="number">62</span>, posY=<span class="number">47</span> }, <span class="comment">-- Medium house2
+</span>            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">116</span>, posY=<span class="number">232</span> }, <span class="comment">-- little house2
+</span>            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">3</span>, posY=<span class="number">173</span> }, <span class="comment">-- little house2
+</span>            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">118</span>, posY=<span class="number">229</span> }, <span class="comment">-- little house2
+</span>            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">6</span>+<span class="number">25</span>, posX=<span class="number">142</span>, posY=<span class="number">72</span> },
+            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">6</span>+<span class="number">25</span>, posX=<span class="number">151</span>, posY=<span class="number">190</span> },
+            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">6</span>+<span class="number">25</span>, posX=<span class="number">72</span>, posY=<span class="number">189</span> },
+            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">7</span>+<span class="number">25</span>, posX=<span class="number">176</span>, posY=<span class="number">185</span> },
+            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">7</span>+<span class="number">25</span>, posX=<span class="number">51</span>, posY=<span class="number">246</span> },
+            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">7</span>+<span class="number">25</span>, posX=<span class="number">54</span>, posY=<span class="number">294</span> },
+            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">108</span>, posY=<span class="number">94</span> },
+            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">84</span>, posY=<span class="number">259</span> },
+            { worldX=<span class="number">11</span>+<span class="number">25</span>, worldY=<span class="number">8</span>+<span class="number">25</span>, posX=<span class="number">123</span>, posY=<span class="number">196</span> },
+        }
+        <span class="comment">-- -- spawn locations for other maps
+</span>        <span class="comment">-- ... snip ...
+</span>    }
+})
+</pre>
+
+
+<p>The above example only shows the basic structure vs the vanilla files, and doesn&rsquo;t make use of any of the Framework&rsquo;s
+features. Let&rsquo;s say we want to add some starting gear for these. A hunting rifle if you chose the trait, and some camping
+gear for the profession.</p>
+
+<pre>
+<span class="comment">-- we don't actually need to fill out all the information
+</span><span class="comment">-- from the above examples, since vanilla already defines them
+</span>
+ProfessionFramework.addTrait(<span class="string">'Hunter'</span>, {
+    <span class="comment">-- add a item to the inventory
+</span>    inventory = { [<span class="string">"Base.HuntingRifle"</span>] = <span class="number">1</span> }
+})
+
+ProfessionFramework.addProfession(<span class="string">'parkranger'</span>, {
+    <span class="comment">-- these items appear at the player's feet on spawn
+</span>    square = {
+        [<span class="string">"camping.CampingTentKit"</span>] = <span class="number">1</span>,
+        [<span class="string">"camping.CampfireKit"</span>] = <span class="number">1</span>,
+    }
+})
+</pre>
+
+
+<p>The Framework can also be used to easily create new traits with custom effects, as in this &lsquo;Nightmares&rsquo; trait example:</p>
+
+<pre>
+ProfessionFramework.addTrait(<span class="string">'Nightmares'</span>, {
+    name = <span class="string">"UI_trait_nightmares"</span>,
+    description = <span class="string">"UI_trait_nightmaresdesc"</span>,
+    exclude = {<span class="string">"Desensitized"</span>},
+    cost = -<span class="number">4</span>,
+    requiresSleepEnabled = <span class="keyword">true</span>,
+    inventory = {
+        <span class="comment">-- starting kit to help get back to sleep
+</span>        [<span class="string">"Base.PillsBeta"</span>] = <span class="number">1</span>,
+        [<span class="string">"Base.PillsSleepingTablets"</span>] = <span class="number">1</span>,
+    },
+    OnGameStart = <span class="keyword">function</span>(trait)
+        <span class="comment">-- add a new event to trigger every ten minutes
+</span>        Events.EveryTenMinutes.Add(<span class="keyword">function</span>()
+            <span class="keyword">local</span> p = getSpecificPlayer(<span class="number">0</span>)
+            <span class="keyword">if</span> p:isAsleep() <span class="keyword">and</span> ZombRand(<span class="number">100</span>) &lt; <span class="number">2</span> <span class="keyword">then</span>
+                p:forceAwake()
+                p:getStats():setPanic(<span class="number">90</span>)
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>)
+    <span class="keyword">end</span>
+})
+</pre>
+
+
+<p><a name="Changelog"></a></p>
+
+<h2>Changelog</h2>
+
+<h4>v1.1</h4>
+
+<ul>
+<li>added <code>spawn</code> key to profession tables, for custom spawn locations.</li>
+<li>added <code>clothing</code> key to profession tables, for adding/editting character creation clothing options.</li>
+<li>added SundayDriver2, SpeedDemon2, and BaseballPlayer2 as profession traits.</li>
+<li>fixed trait key removeInMP being overwritten by requiresSleepEnabled</li>
+<li><p>fixed trait key requiresSleepEnabled applying wrong value</p></li>
+<li><p>Refactored functions in the client file into the main ProfessionFramework table.</p></li>
+<li>Rewrote and expanded internal documentation in LDoc syntax</li>
+<li>Included HTML documentation for the API in the <code>docs</code> folder.</li>
+</ul>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2019-09-29 22:02:33 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

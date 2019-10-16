@@ -1,0 +1,880 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>ProfessionFramework API Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Profession Framework</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Constants">Constants </a></li>
+<li><a href="#Logging_Constants">Logging Constants </a></li>
+<li><a href="#Data_Tables">Data Tables </a></li>
+<li><a href="#Configuration_Options">Configuration Options </a></li>
+<li><a href="#Functions">Functions </a></li>
+<li><a href="#Automatically_Called_Functions">Automatically Called Functions </a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><strong>ProfessionFramework</strong></li>
+</ul>
+<h2>Scripts</h2>
+<ul class="nowrap">
+  <li><a href="../scripts/ProfessionFrameworkClient.html">ProfessionFrameworkClient</a></li>
+  <li><a href="../scripts/3ProfessionTraits.html">3ProfessionTraits</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/default_professions.lua.html">default_professions.lua</a></li>
+  <li><a href="../examples/default_traits.lua.html">default_traits.lua</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>ProfessionFramework</code></h1>
+<p>Simple Framework for adding or modifying Professions and Traits.</p>
+<p><p>All functions and tables can be accessed via the global table named ProfessionFramework.
+Generally you will only need to make use of the functions <a href="../modules/ProfessionFramework.html#addProfession">ProfessionFramework.addProfession</a> and <a href="../modules/ProfessionFramework.html#addTrait">ProfessionFramework.addTrait</a></p>
+
+<h2>Examples</h2>
+
+<pre>
+<span class="comment">-- edit a existing profession, changing skill levels and starting equipment
+</span>ProfessionFramework.addProfession(<span class="string">'carpenter'</span>, {
+    cost = <span class="number">4</span>, <span class="comment">-- was 2
+</span>    xp = {
+        [Perks.Woodwork] = <span class="number">4</span>,
+    },
+    inventory = {
+        [<span class="string">"Base.Hammer"</span>] = <span class="number">2</span>,
+        [<span class="string">"Base.Saw"</span>] = <span class="number">1</span>,
+        [<span class="string">"Base.Woodglue"</span>] = <span class="number">3</span>,
+        [<span class="string">"Base.NailsBox"</span>] = <span class="number">3</span>,
+    },
+    square = {
+        [<span class="string">"Base.Plank"</span>] = <span class="number">10</span>,
+    },
+})
+
+
+<span class="comment">-- add a new trait that randomly wake up the player in a panic
+</span>ProfessionFramework.addTrait(<span class="string">'Nightmares'</span>, {
+    name = <span class="string">"UI_trait_nightmares"</span>,
+    description = <span class="string">"UI_trait_nightmaresdesc"</span>,
+    exclude = {<span class="string">"Desensitized"</span>},
+    cost = -<span class="number">4</span>,
+    requiresSleepEnabled = <span class="keyword">true</span>,
+    inventory = {
+        <span class="comment">-- starting kit to help get back to sleep
+</span>        [<span class="string">"Base.PillsBeta"</span>] = <span class="number">1</span>,
+        [<span class="string">"Base.PillsSleepingTablets"</span>] = <span class="number">1</span>,
+    },
+    OnGameStart = <span class="keyword">function</span>(trait)
+        <span class="comment">-- add a new event to trigger every ten minutes
+</span>        Events.EveryTenMinutes.Add(<span class="keyword">function</span>()
+            <span class="keyword">local</span> p = getSpecificPlayer(<span class="number">0</span>)
+            <span class="keyword">if</span> p:isAsleep() <span class="keyword">and</span> ZombRand(<span class="number">100</span>) &lt; <span class="number">2</span> <span class="keyword">then</span>
+                p:forceAwake()
+                p:getStats():setPanic(<span class="number">90</span>)
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>)
+    <span class="keyword">end</span>
+})
+</pre>
+</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: 2018</li>
+        <li><strong>Release</strong>: 1.1</li>
+        <li><strong>Author</strong>: Fenris_Wolf</li>
+    </ul>
+
+
+<h2><a href="#Constants">Constants </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#VERSION">VERSION</a></td>
+	<td class="summary">Current version number</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#AUTHOR">AUTHOR</a></td>
+	<td class="summary">Author/Maintainer</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#COMPATIBILITY_MODE">COMPATIBILITY_MODE</a></td>
+	<td class="summary">Backwards compatibility mode (build 40)</td>
+	</tr>
+</table>
+<h2><a href="#Logging_Constants">Logging Constants </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#ERROR">ERROR</a></td>
+	<td class="summary">integer 0</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#WARN">WARN</a></td>
+	<td class="summary">integer 1</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#INFO">INFO</a></td>
+	<td class="summary">integer 2</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#DEBUG">DEBUG</a></td>
+	<td class="summary">integer 3</td>
+	</tr>
+</table>
+<h2><a href="#Data_Tables">Data Tables </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Professions">Professions</a></td>
+	<td class="summary">Table of registered professions</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Traits">Traits</a></td>
+	<td class="summary">Table of registered traits</td>
+	</tr>
+</table>
+<h2><a href="#Configuration_Options">Configuration Options </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#RemoveDefaultProfessions">RemoveDefaultProfessions</a></td>
+	<td class="summary">Remove all vanilla professions (bool)</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#RemoveDefaultTraits">RemoveDefaultTraits</a></td>
+	<td class="summary">Remove all vanilla traits (bool)</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#UsePFTraitVersions">UsePFTraitVersions</a></td>
+	<td class="summary">Use Profession Framework versions of vanilla traits</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#AlwaysUseStartingKits">AlwaysUseStartingKits</a></td>
+	<td class="summary">Always supply starting kits, false to obey sandbox settings (bool)</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#LogLevel">LogLevel</a></td>
+	<td class="summary">Logging level verbosity.</td>
+	</tr>
+</table>
+<h2><a href="#Functions">Functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#log">log (level, text)</a></td>
+	<td class="summary">Basic logging function.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#addProfession">addProfession (type, details)</a></td>
+	<td class="summary">Registers a profession with the profession framework</p>
+
+<p>Defines a profession selectable by the player.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getProfession">getProfession (type)</a></td>
+	<td class="summary">Returns the details of a registered profession.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#addTrait">addTrait (type, details)</a></td>
+	<td class="summary">Registers a trait with the profession framework.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getTrait">getTrait (type)</a></td>
+	<td class="summary">Returns the details of a registered trait.</td>
+	</tr>
+</table>
+<h2><a href="#Automatically_Called_Functions">Automatically Called Functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#doTraits">doTraits ()</a></td>
+	<td class="summary">Adds all registered traits to the java TraitFactory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#doProfessions">doProfessions ()</a></td>
+	<td class="summary">Adds all registered professions to the java ProfessionFactory.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#addStartingKit">addStartingKit (player, square, details)</a></td>
+	<td class="summary">Adds starting kits for any profession and traits</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#addClothes">addClothes (name, details)</a></td>
+	<td class="summary">Called automatically by <a href="../modules/ProfessionFramework.html#doProfessions">ProfessionFramework.doProfessions</a></td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#onSpawnRegionsLoaded">onSpawnRegionsLoaded (regions)</a></td>
+	<td class="summary">Injects custom spawn points into the region table.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#onGameStart">onGameStart ()</a></td>
+	<td class="summary">Triggered when the player enters the game world.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#onNewGame">onNewGame (player, square)</a></td>
+	<td class="summary">Triggered when the player enters the game world for the first time.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Constants"></a>Constants </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "VERSION"></a>
+    <strong>VERSION</strong>
+    </dt>
+    <dd>
+    Current version number
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "AUTHOR"></a>
+    <strong>AUTHOR</strong>
+    </dt>
+    <dd>
+    Author/Maintainer
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "COMPATIBILITY_MODE"></a>
+    <strong>COMPATIBILITY_MODE</strong>
+    </dt>
+    <dd>
+    Backwards compatibility mode (build 40)
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Logging_Constants"></a>Logging Constants </h2>
+
+          <div class="section-description">
+          These are passed to and checked when making calls to <a href="../modules/ProfessionFramework.html#log">ProfessionFramework.log</a>.
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "ERROR"></a>
+    <strong>ERROR</strong>
+    </dt>
+    <dd>
+    integer 0
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "WARN"></a>
+    <strong>WARN</strong>
+    </dt>
+    <dd>
+    integer 1
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "INFO"></a>
+    <strong>INFO</strong>
+    </dt>
+    <dd>
+    integer 2
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "DEBUG"></a>
+    <strong>DEBUG</strong>
+    </dt>
+    <dd>
+    integer 3
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header has-description"><a name="Data_Tables"></a>Data Tables </h2>
+
+          <div class="section-description">
+          These should not be directly accessed, use function such as <a href="../modules/ProfessionFramework.html#addProfession">ProfessionFramework.addProfession</a> and
+<a href="../modules/ProfessionFramework.html#getProfession">ProfessionFramework.getProfession</a> instead
+          </div>
+    <dl class="function">
+    <dt>
+    <a name = "Professions"></a>
+    <strong>Professions</strong>
+    </dt>
+    <dd>
+    Table of registered professions
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Traits"></a>
+    <strong>Traits</strong>
+    </dt>
+    <dd>
+    Table of registered traits
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Configuration_Options"></a>Configuration Options </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "RemoveDefaultProfessions"></a>
+    <strong>RemoveDefaultProfessions</strong>
+    </dt>
+    <dd>
+    Remove all vanilla professions (bool)
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "RemoveDefaultTraits"></a>
+    <strong>RemoveDefaultTraits</strong>
+    </dt>
+    <dd>
+    Remove all vanilla traits (bool)
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "UsePFTraitVersions"></a>
+    <strong>UsePFTraitVersions</strong>
+    </dt>
+    <dd>
+    Use Profession Framework versions of vanilla traits
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "AlwaysUseStartingKits"></a>
+    <strong>AlwaysUseStartingKits</strong>
+    </dt>
+    <dd>
+    Always supply starting kits, false to obey sandbox settings (bool)
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "LogLevel"></a>
+    <strong>LogLevel</strong>
+    </dt>
+    <dd>
+    Logging level verbosity.
+
+
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Functions"></a>Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "log"></a>
+    <strong>log (level, text)</strong>
+    </dt>
+    <dd>
+    Basic logging function.</p>
+
+<p>Prints a message to the console and console.txt log, if ProfessionFramework.LogLevel is equal or less then the level arguement.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">level</span>
+            <span class="types"><span class="type">int</span></span>
+         logging level constant
+        </li>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         text message to log.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">ProfessionFramework.log(ProfessionFramework.WARN, <span class="string">"this is a warning log message"</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "addProfession"></a>
+    <strong>addProfession (type, details)</strong>
+    </dt>
+    <dd>
+    Registers a profession with the profession framework</p>
+
+<p>Defines a profession selectable by the player.  Both new custom professions and the default vanilla ones can be defined in
+this manor.</p>
+
+<p>When overwriting a vanilla (or pre-existing) profession, not all key/value pairs in the <code>details</code> table argument
+will be valid as the existing entries will be modified. Vanilla professions <strong>do not</strong> need to be registered with this
+function, but won&rsquo;t be able to make use of the ProfessionFramework&rsquo;s features unless they are.</p>
+
+<p>Note no action is taken when this function is called, other then inserting into the <a href="../modules/ProfessionFramework.html#Professions">ProfessionFramework.Professions</a> table.
+Any calls to this function need to be done before the <code>OnGameBoot</code> event.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">type</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         name of the profession
+        </li>
+        <li><span class="parameter">details</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         a table containing the profession details.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         the details table passed as a arg</p>
+
+<p>Valid key/value pairs the <code>details</code> table are:</p>
+
+<ul>
+<li><p>name = string value of a translation key. (default &ldquo;Unknown&rdquo;)</p></li>
+<li><p>cost = integer value, the number of points this profession starts with. (default 0)</p></li>
+<li><p>icon = string value, image filename (without extension) to use. (default &ldquo;&rdquo;)</p></li>
+<li><p>xp = a table of perk enum values (keys), and the experience levels for each (values). (default nil)</p></li>
+<li><p>traits = a table list of traits this profession starts with. (default nil)</p></li>
+<li><p>recipes = a table list of recipes this profession starts with. (default nil)</p></li>
+<li><p>inventory = a table of items the profession starts with. Keys are item names, values are the count. (default nil)</p></li>
+<li><p>square =  a table of items the profession starts with (on the ground). Keys are item names, values are the count. (default nil)</p></li>
+<li><p>spawn = a table of region names (keys), and subtable values of spawn locations. Use of this key will overrides vanilla regions. (default nil)</p></li>
+<li><p>clothing = a table of BodyLocations and subtable values of clothing items to enable on the character creation screen. (default nil)<br/>
+The clothing table supports several &lsquo;special&rsquo; key/value pairs:</p>
+
+<ul>
+<li><p><code>replace</code> bool value, completely replaces all vanilla clothing options (default false)</p></li>
+<li><p><code>replace_items</code> bool value, only replace vanilla options for the BodyLocations specified in this table. (default false)</p></li>
+<li><p><code>Male</code> clothing subtable for male selection only (default nil)</p></li>
+<li><p><code>Female</code> clothing subtable for female seleciton only (default nil)</p></li>
+</ul>
+</li>
+<li><p>OnNewGame = a function to be called when the character is created. (default nil)<br/>
+Arguments are a <code>IsoPlayer</code> object, a <code>IsoGridSquare</code> object, and the <a href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a> profession name.</p></li>
+</ul>
+
+
+<p>Note unlike the details table passed to <a href="../modules/ProfessionFramework.html#addTrait">ProfessionFramework.addTrait</a>, the profession table does not include a
+<code>description</code> key. The description&rsquo;s translation string is <strong>automatically generated by PZ</strong>, using a <code>UI_profdesc﻿_</code>
+prefix such as <code>UI_prof_unemployed</code>
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getProfession"></a>
+    <strong>getProfession (type)</strong>
+    </dt>
+    <dd>
+    Returns the details of a registered profession.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">type</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name of the profession
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        the profession details or nil
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "addTrait"></a>
+    <strong>addTrait (type, details)</strong>
+    </dt>
+    <dd>
+    Registers a trait with the profession framework.</p>
+
+<p>Defines a trait selectable by the player. Both new custom traits and the default vanilla ones can be defined in
+this manor.</p>
+
+<p>When overwriting a vanilla (or pre-existing) trait, not all key/value pairs in the <code>details</code> table argument
+will be valid as the existing entries will be modified. Vanilla traits <strong>do not</strong> need to be registered with this
+function, but won&rsquo;t be able to make use of the ProfessionFramework&rsquo;s features unless they are.</p>
+
+<p>Note no action is taken when this function is called, other then inserting into the <a href="../modules/ProfessionFramework.html#Traits">ProfessionFramework.Traits</a> table.
+Any calls to this function need to be done before the <code>OnGameBoot</code> event.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">type</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         name of the trait
+        </li>
+        <li><span class="parameter">details</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        <p> a table containing the profession details.</p>
+
+<p>Valid key/value pairs the <code>details</code> table are:</p>
+
+<ul>
+<li><p><code>cost</code>: (integer) the number of points this trait costs.<br/>
+Note: Can not be adjusted for traits already registered with the java TraitFactory.</p></li>
+<li><p><code>name</code>: (string) name of the trait (or of the translation entry).<br/>
+Note: Can not be adjusted for traits already registered with the java TraitFactory.</p></li>
+<li><p><code>description</code>: (string) description of the trait (or of the translation entry).<br/>
+Note: Can not be adjusted for traits already registered with the java TraitFactory.</p></li>
+<li><p><code>removeInMP</code>: (bool) Is this trait only for single player mode<br/>
+Note: Can not be adjusted for traits already registered with the java TraitFactory.</p></li>
+<li><p><code>requiresSleepEnabled</code>: (bool) Sleeping must be enabled in sandbox settings to select. (MP only)<br/>
+Note: Can not be adjusted for traits already registered with the java TraitFactory.</p></li>
+<li><p><code>profession</code>: (bool) Is this trait a &lsquo;profession trait&rsquo; (non-selectable)<br/>
+Note: Can not be adjusted for traits already registered with the java TraitFactory.</p></li>
+<li><p><code>xp</code>: (table) perk enum values (keys), and the experience levels for each (values).<br/>
+Note when using the xp table on a trait already setup with the java TraitFactory this table will not change
+existing xp levels unless they are redefined here.</p></li>
+<li><p><code>swap</code>: (string) name of another trait to swap this one with OnNewGame. This trait is removed from the player, and the
+new one added This should only really be used for the &lsquo;special&rsquo; traits.</p></li>
+<li><p><code>exclude</code>: (table) list of traits this one should be mutually exclusive with.</p></li>
+<li><p><code>add</code>: (table) list of additional traits to add to the player OnNewGame</p></li>
+<li><p><code>inventory</code>: (table) containing items this trait starts with. Keys are item names, values are the count.</p></li>
+<li><p><code>square</code>: (table) containing items this trait starts with (on the ground). Keys the item names, values are the count.</p></li>
+<li><p><code>OnNewGame</code>: (function) a callback executed when the character is created if it has this trait. Arguments are:
+a IsoPlayer object, a IsoGridSquare object, and the string trait name.</p></li>
+<li><p><code>OnGameStart</code>: (function) a callback executed OnGameStart if the player has this trait. Arguments are:
+the string trait name.</p></li>
+</ul>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getTrait"></a>
+    <strong>getTrait (type)</strong>
+    </dt>
+    <dd>
+    Returns the details of a registered trait.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">type</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         The name of the trait
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">nil</span> or <a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        The trait details or nil
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Automatically_Called_Functions"></a>Automatically Called Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "doTraits"></a>
+    <strong>doTraits ()</strong>
+    </dt>
+    <dd>
+    Adds all registered traits to the java TraitFactory.</p>
+
+<p>This function is called automatically with the <code>OnGameBoot</code> event, and overrides the vanilla <code>BaseGameCharacterDetails.DoTraits</code></p>
+
+<p>It calls the original <code>BaseGameCharacterDetails.DoTraits</code> before running its custom code unless UsePFTraitVersions is true.</p>
+
+<p>The overwrite is required to ensure custom traits are still available in MP after player death.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "doProfessions"></a>
+    <strong>doProfessions ()</strong>
+    </dt>
+    <dd>
+    Adds all registered professions to the java ProfessionFactory.</p>
+
+<p>This function is called automatically with the <code>OnGameBoot</code> event, and overrides the vanilla <code>BaseGameCharacterDetails.DoProfessions</code></p>
+
+<p>It calls the original <code>BaseGameCharacterDetails.DoProfessions</code> before running its custom code <strong>unless</strong>
+<a href="../modules/ProfessionFramework.html#RemoveDefaultProfessions">ProfessionFramework.RemoveDefaultProfessions</a> is <code>true</code>. The overwrite is required to ensure custom traits are still
+available in MP after player death.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "addStartingKit"></a>
+    <strong>addStartingKit (player, square, details)</strong>
+    </dt>
+    <dd>
+    Adds starting kits for any profession and traits This function is called automatically by <a href="../modules/ProfessionFramework.html#onNewGame">ProfessionFramework.onNewGame</a>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">player</span>
+            <span class="types"><span class="type">IsoPlayer</span></span>
+
+        </li>
+        <li><span class="parameter">square</span>
+            <span class="types"><span class="type">IsoGridSquare</span></span>
+
+        </li>
+        <li><span class="parameter">details</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "addClothes"></a>
+    <strong>addClothes (name, details)</strong>
+    </dt>
+    <dd>
+    Called automatically by <a href="../modules/ProfessionFramework.html#doProfessions">ProfessionFramework.doProfessions</a>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+
+        </li>
+        <li><span class="parameter">details</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "onSpawnRegionsLoaded"></a>
+    <strong>onSpawnRegionsLoaded (regions)</strong>
+    </dt>
+    <dd>
+    Injects custom spawn points into the region table.</p>
+
+<p>Called automatically by the <code>OnSpawnRegionsLoaded</code> event.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">regions</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "onGameStart"></a>
+    <strong>onGameStart ()</strong>
+    </dt>
+    <dd>
+    Triggered when the player enters the game world.</p>
+
+<p>Called automatically by the <code>OnGameStart</code> event hooked in <a href="../scripts/ProfessionFrameworkClient.html#">ProfessionFrameworkClient</a>.</p>
+
+<p>Runs any custom trait <code>OnGameStart</code> callbacks for the player&rsquo;s traits.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "onNewGame"></a>
+    <strong>onNewGame (player, square)</strong>
+    </dt>
+    <dd>
+    Triggered when the player enters the game world for the first time.</p>
+
+<p>Called automatically by the <code>OnNewGame</code> event hooked in <a href="../scripts/ProfessionFrameworkClient.html#">ProfessionFrameworkClient</a>.</p>
+
+<p>Runs any custom <code>OnNewGame</code> callbacks and calls <a href="../modules/ProfessionFramework.html#addStartingKit">ProfessionFramework.addStartingKit</a> for the player&rsquo;s chosen traits and
+profession. Any traits defined with the <code>swap</code> key will be swapped out here.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">player</span>
+            <span class="types"><span class="type">IsoPlayer</span></span>
+
+        </li>
+        <li><span class="parameter">square</span>
+            <span class="types"><span class="type">IsoGridSquare</span></span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2019-09-29 22:02:33 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

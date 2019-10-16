@@ -1,9 +1,46 @@
---[[
-    This file sets up all special traits (brave, lucky, etc) so they can be used in professions
-    Note: cost = value is excluded from these trait tables, as this will default to 0
+--[[- Enables all *special* traits as profession traits.
+
+Many traits such as Brave, Lucky, Speed Demon, etc have effects that are hardcoded in various places through PZ's lua
+and java files, and normal methods of making "Profession versions" (can't be picked and cost 0 points) will not properly work,
+as the trait name will not match.
+
+This script solves the problem by using the `swap` flag on the profession version of the trait, thus replacing it with
+the normal non-profession version when the character is made. This way traits with hardcoded effects function normally.
+
+All these profession traits have identical names to the non-profession version, but prefixed with a '2' (ie: Brave2,
+SpeedDemon2, etc)
+
+@script 3ProfessionTraits
+@author Fenris_Wolf
+@release 1.1
+@copyright 2018
 
 ]]
+
 local addTrait = ProfessionFramework.addTrait
+
+addTrait("SpeedDemon2", {
+    name = "UI_trait_SpeedDemon",
+    description = "UI_trait_SpeedDemonDesc",
+    profession = true,
+    exclude = {"SpeedDemon", "SundayDriver"},
+    swap = "SpeedDemon",
+})
+addTrait("SundayDriver2", {
+    name = "UI_trait_SundayDriver",
+    description = "UI_trait_SundayDriverDesc",
+    profession = true,
+    exclude = {"SpeedDemon", "SundayDriver"},
+    swap = "SundayDriver",
+})
+
+addTrait("BaseballPlayer2", {
+    name = "UI_trait_PlaysBaseball",
+    description = "UI_trait_PlaysBaseballDesc",
+    profession = true,
+    exclude = {"BaseballPlayer"},
+    swap = "BaseballPlayer",
+})
 
 
 addTrait("Brave2", {

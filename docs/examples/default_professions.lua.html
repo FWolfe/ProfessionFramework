@@ -1,0 +1,345 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>ProfessionFramework API Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>Profession Framework</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+
+
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><strong>default_professions.lua</strong></li>
+  <li><a href="../examples/default_traits.lua.html">default_traits.lua</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/ProfessionFramework.html">ProfessionFramework</a></li>
+</ul>
+<h2>Scripts</h2>
+<ul class="nowrap">
+  <li><a href="../scripts/ProfessionFrameworkClient.html">ProfessionFrameworkClient</a></li>
+  <li><a href="../scripts/3ProfessionTraits.html">3ProfessionTraits</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+    <h2>default_professions.lua</h2>
+<pre>
+<span class="comment">--[[- Vanilla professions, reimplemented in Profession Framework style.
+
+Note the data in here is only from BaseGameCharacterDetails.DoProfessions
+in MainCreationMethods.lua. Clothing and spawnpoints are not covered here.
+
+This file aims to be compatibile with both build 40 and 41, skill differences
+are added at the bottom of this file instead of directly in the addProfession
+call.
+
+Any of these table entries can be retrieved and modified using:
+
+local profession = ProfessionFramework.getProfession(name)
+
+]]</span>
+
+<span class="keyword">local</span> addProfession = ProfessionFramework.addProfession
+<span class="keyword">local</span> getProfession = ProfessionFramework.getProfession
+
+<span class="comment">-- set this to true since we skip the vanilla definitions.
+</span>ProfessionFramework.RemoveDefaultProfessions = <span class="keyword">true</span>
+
+
+addProfession(<span class="string">'unemployed'</span>, {
+    name = <span class="string">"UI_prof_unemployed"</span>,
+    icon = <span class="string">""</span>,
+    cost = <span class="number">8</span>,
+})
+
+addProfession(<span class="string">'fireofficer'</span>, {
+    name = <span class="string">"UI_prof_fireoff"</span>,
+    icon = <span class="string">"profession_fireofficer2"</span>,
+    cost = <span class="number">0</span>,
+    xp = {
+        [Perks.Sprinting] = <span class="number">1</span>,
+        [Perks.Strength] = <span class="number">1</span>,
+        [Perks.Fitness] = <span class="number">1</span>,
+    },
+})
+
+addProfession(<span class="string">'policeofficer'</span>, {
+    name = <span class="string">"UI_prof_policeoff"</span>,
+    icon = <span class="string">"profession_policeofficer2"</span>,
+    cost = -<span class="number">4</span>,
+    xp = {
+        [Perks.Aiming] = <span class="number">3</span>,
+        [Perks.Reloading] = <span class="number">2</span>,
+        [Perks.Nimble] = <span class="number">1</span>,
+    },
+})
+
+addProfession(<span class="string">'parkranger'</span>, {
+    name = <span class="string">"UI_prof_parkranger"</span>,
+    icon = <span class="string">"profession_parkranger2"</span>,
+    cost = -<span class="number">4</span>,
+    xp = {
+        [Perks.Trapping] = <span class="number">2</span>,
+        [Perks.PlantScavenging] = <span class="number">2</span>,
+        [Perks.Woodwork] = <span class="number">1</span>,
+    },
+    recipes = {<span class="string">"Make Stick Trap"</span>, <span class="string">"Make Snare Trap"</span>, <span class="string">"Make Wooden Cage Trap"</span>, <span class="string">"Make Trap Box"</span>, <span class="string">"Make Cage Trap"</span>},
+})
+
+addProfession(<span class="string">'constructionworker'</span>, {
+    name = <span class="string">"UI_prof_constructionworker"</span>,
+    icon = <span class="string">"profession_constructionworker2"</span>,
+    cost = -<span class="number">2</span>,
+    xp = {
+        [Perks.SmallBlunt] = <span class="number">2</span>,
+        [Perks.Woodwork] = <span class="number">1</span>,
+    },
+})
+
+addProfession(<span class="string">'securityguard'</span>, {
+    name = <span class="string">"UI_prof_securityguard"</span>,
+    icon = <span class="string">"profession_securityguard2"</span>,
+    cost = -<span class="number">2</span>,
+    xp = {
+        [Perks.Sprinting] = <span class="number">2</span>,
+        [Perks.Lightfoot] = <span class="number">1</span>,
+    },
+    traits = {<span class="string">"NightOwl"</span>},
+})
+
+addProfession(<span class="string">'carpenter'</span>, {
+    name = <span class="string">"UI_prof_Carpenter"</span>,
+    icon = <span class="string">"profession_hammer2"</span>,
+    cost = <span class="number">2</span>,
+    xp = {
+        [Perks.Woodwork] = <span class="number">3</span>,
+    },
+})
+
+addProfession(<span class="string">'burglar'</span>, {
+    name = <span class="string">"UI_prof_Burglar"</span>,
+    icon = <span class="string">"profession_burglar2"</span>,
+    cost = -<span class="number">6</span>,
+    xp = {
+        [Perks.Nimble] = <span class="number">2</span>,
+        [Perks.Sneak] = <span class="number">2</span>,
+        [Perks.Lightfoot] = <span class="number">2</span>,
+    },
+})
+
+addProfession(<span class="string">'chef'</span>, {
+    name = <span class="string">"UI_prof_Chef"</span>,
+    icon = <span class="string">"profession_chef2"</span>,
+    cost = -<span class="number">4</span>,
+    xp = {
+        [Perks.Cooking] = <span class="number">3</span>,
+    },
+    traits = {<span class="string">"Cook2"</span>},
+    recipes = {<span class="string">"Make Cake Batter"</span>, <span class="string">"Make Pie Dough"</span>, <span class="string">"Make Bread Dough"</span>},
+})
+
+addProfession(<span class="string">'repairman'</span>, {
+    name = <span class="string">"UI_prof_Repairman"</span>,
+    icon = <span class="string">"profession_repairman2"</span>,
+    cost = -<span class="number">4</span>,
+    xp = {
+        [Perks.Woodwork] = <span class="number">1</span>,
+    },
+})
+
+addProfession(<span class="string">'farmer'</span>, {
+    name = <span class="string">"UI_prof_Farmer"</span>,
+    icon = <span class="string">"profession_farmer2"</span>,
+    cost = <span class="number">2</span>,
+    xp = {
+        [Perks.Farming] = <span class="number">3</span>,
+    },
+    recipes = {<span class="string">"Make Mildew Cure"</span>, <span class="string">"Make Flies Cure"</span>},
+})
+
+addProfession(<span class="string">'fisherman'</span>, {
+    name = <span class="string">"UI_prof_Fisherman"</span>,
+    cost = <span class="string">"profession_fisher2"</span>,
+    cost = -<span class="number">2</span>,
+    xp = {
+        [Perks.Fishing] = <span class="number">3</span>,
+        [Perks.PlantScavenging] = <span class="number">1</span>,
+    },
+    recipes = {<span class="string">"Make Fishing Rod"</span>, <span class="string">"Fix Fishing Rod"</span>, <span class="string">"Get Wire Back"</span>, <span class="string">"Make Fishing Net"</span>},
+})
+
+addProfession(<span class="string">'doctor'</span>, {
+    name = <span class="string">"UI_prof_Doctor"</span>,
+    icon = <span class="string">"profession_doctor2"</span>,
+    cost = <span class="number">2</span>,
+    xp = {
+        [Perks.Doctor] = <span class="number">3</span>
+    },
+})
+
+addProfession(<span class="string">'veteran'</span>, {
+    name = <span class="string">"UI_prof_Veteran"</span>,
+    icon = <span class="string">"profession_veteran2"</span>,
+    cost = -<span class="number">8</span>,
+    xp = {
+        [Perks.Aiming] = <span class="number">2</span>,
+        [Perks.Reloading] = <span class="number">2</span>,
+    },
+    traits = {<span class="string">"Desensitized"</span> },
+})
+
+addProfession(<span class="string">'nurse'</span>, {
+    name = <span class="string">"UI_prof_Nurse"</span>,
+    icon = <span class="string">"profession_nurse"</span>,
+    cost = <span class="number">2</span>,
+    xp = {
+        [Perks.Doctor] = <span class="number">2</span>,
+        [Perks.Lightfoot] = <span class="number">1</span>,
+    },
+})
+
+addProfession(<span class="string">'lumberjack'</span>, {
+    name = <span class="string">"UI_prof_Lumberjack"</span>,
+    icon = <span class="string">"profession_lumberjack"</span>,
+    cost = <span class="number">0</span>,
+    xp = {
+        [Perks.Axe] = <span class="number">2</span>,
+        [Perks.Strength] = <span class="number">1</span>,
+    },
+    traits = {<span class="string">"Axeman"</span>},
+})
+
+addProfession(<span class="string">'fitnessInstructor'</span>, {
+    name = <span class="string">"UI_prof_FitnessInstructor"</span>,
+    icon = <span class="string">"profession_fitnessinstructor"</span>,
+    cost = -<span class="number">6</span>,
+    xp = {
+        [Perks.Fitness] = <span class="number">3</span>,
+        [Perks.Sprinting] = <span class="number">2</span>,
+    },
+    traits = {<span class="string">"Nutritionist2"</span>},
+})
+
+addProfession(<span class="string">'burgerflipper'</span>, {
+    name = <span class="string">"UI_prof_BurgerFlipper"</span>,
+    icon = <span class="string">"profession_burgerflipper"</span>,
+    cost = <span class="number">2</span>,
+    xp = {
+        [Perks.Cooking] = <span class="number">2</span>
+    },
+    traits = { <span class="string">"Cook2"</span> }
+})
+
+addProfession(<span class="string">'electrician'</span>, {
+    name = <span class="string">"UI_prof_Electrician"</span>,
+    icon = <span class="string">"profession_electrician"</span>,
+    cost = -<span class="number">4</span>,
+    xp = {
+        [Perks.Electricity] = <span class="number">3</span>
+    },
+    recipes = {
+        <span class="string">"Generator"</span>, <span class="string">"Make Remote Controller V1"</span>, <span class="string">"Make Remote Controller V2"</span>, <span class="string">"Make Remote Controller V3"</span>,
+        <span class="string">"Make Remote Trigger"</span>, <span class="string">"Make Timer"</span>, <span class="string">"Craft Makeshift Radio"</span>, <span class="string">"Craft Makeshift HAM Radio"</span>, <span class="string">"Craft Makeshift Walkie Talkie"</span>
+    }
+})
+
+addProfession(<span class="string">'engineer'</span>, {
+    name = <span class="string">"UI_prof_Engineer"</span>,
+    icon = <span class="string">"profession_engineer"</span>,
+    cost = -<span class="number">4</span>,
+    xp = {
+        [Perks.Electricity] = <span class="number">1</span>,
+        [Perks.Woodwork] = <span class="number">1</span>
+    },
+    recipes = { <span class="string">"Make Aerosol bomb"</span>, <span class="string">"Make Flame bomb"</span>, <span class="string">"Make Pipe bomb"</span>, <span class="string">"Make Noise generator"</span>, <span class="string">"Make Smoke Bomb"</span> }
+})
+
+addProfession(<span class="string">'metalworker'</span>, {
+    name = <span class="string">"UI_prof_MetalWorker"</span>,
+    icon = <span class="string">"profession_metalworker"</span>,
+    cost = -<span class="number">6</span>,
+    xp = {
+        [Perks.MetalWelding] = <span class="number">3</span>
+    },
+    recipes = { <span class="string">"Make Metal Walls"</span>, <span class="string">"Make Metal Fences"</span>, <span class="string">"Make Metal Containers"</span>, <span class="string">"Make Metal Sheet"</span>, <span class="string">"Make Small Metal Sheet"</span>, <span class="string">"Make Metal Roof"</span> }
+})
+
+addProfession(<span class="string">'mechanics'</span>, {
+    name = <span class="string">"UI_prof_Mechanics"</span>,
+    icon = <span class="string">"profession_mechanic"</span>,
+    cost = -<span class="number">4</span>,
+    xp = {
+        [Perks.Mechanics] = <span class="number">3</span>
+    },
+    traits = { <span class="string">"Mechanics2"</span> },
+    recipes = { <span class="string">"Basic Mechanics"</span>, <span class="string">"Intermediate Mechanics"</span>, <span class="string">"Advanced Mechanics"</span> }
+})
+
+
+<span class="keyword">if</span> ProfessionFramework.COMPATIBILITY_MODE <span class="keyword">then</span>
+    <span class="comment">-- build 40 only
+</span>    getProfession(<span class="string">'constructionworker'</span>).xp[Perks.Blunt] = <span class="number">3</span>
+    getProfession(<span class="string">'chef'</span>).xp[Perks.BladeMaintenance] = <span class="number">1</span>
+    getProfession(<span class="string">'chef'</span>).xp[Perks.Axe] = <span class="number">1</span>
+    getProfession(<span class="string">'repairman'</span>).xp[Perks.BladeMaintenance] = <span class="number">2</span>
+    getProfession(<span class="string">'repairman'</span>).xp[Perks.BluntMaintenance] = <span class="number">2</span>
+    getProfession(<span class="string">'burgerflipper'</span>).xp[Perks.BladeMaintenance] = <span class="number">1</span>
+<span class="keyword">else</span>
+    <span class="comment">-- build 41 only
+</span>    getProfession(<span class="string">'fireofficer'</span>).xp[Perks.Axe] = <span class="number">1</span>
+    getProfession(<span class="string">'parkranger'</span>).xp[Perks.Axe] = <span class="number">1</span>
+    getProfession(<span class="string">'constructionworker'</span>).xp[Perks.SmallBlunt] = <span class="number">2</span>
+    getProfession(<span class="string">'carpenter'</span>).xp[Perks.SmallBlunt] = <span class="number">1</span>
+    getProfession(<span class="string">'chef'</span>).xp[Perks.Maintance] = <span class="number">1</span>
+    getProfession(<span class="string">'chef'</span>).xp[Perks.SmallBlade] = <span class="number">1</span>
+    getProfession(<span class="string">'repairman'</span>).xp[Perks.Maintenance] = <span class="number">2</span>
+    getProfession(<span class="string">'repairman'</span>).xp[Perks.SmallBlunt] = <span class="number">1</span>
+    getProfession(<span class="string">'doctor'</span>).xp[Perks.SmallBlade] = <span class="number">1</span>
+    getProfession(<span class="string">'burgerflipper'</span>).xp[Perks.Maintenance] = <span class="number">1</span>
+    getProfession(<span class="string">'burgerflipper'</span>).xp[Perks.SmallBlade] = <span class="number">1</span>
+    getProfession(<span class="string">'mechanics'</span>).xp[Perks.SmallBlunt] = <span class="number">1</span>
+<span class="keyword">end</span></pre>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2019-09-29 22:02:33 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
