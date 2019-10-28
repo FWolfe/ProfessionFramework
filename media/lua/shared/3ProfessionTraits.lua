@@ -356,6 +356,7 @@ addTrait("NightVision2", {
     exclude = {"NightVision"},
     swap = "NightVision",
 })
+--[[
 
 addTrait("Hypercondriac2", {
     name = "UI_trait_hypochon",
@@ -364,6 +365,7 @@ addTrait("Hypercondriac2", {
     exclude = {"Hypercondriac"},
     swap = "Hypercondriac",
 })
+]]
 
 addTrait("Agoraphobic2", {
     name = "UI_trait_agoraphobic",
