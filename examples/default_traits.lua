@@ -69,11 +69,13 @@ addTrait("Graceful", {
     cost = 4,
 })
 
+--[[ disabled in build 41.18 
 addTrait("Hypercondriac", {
     name = "UI_trait_hypochon",
     description = "UI_trait_hypochondesc",
     cost = -2,
 })
+]]
 
 addTrait("ShortSighted", {
     name = "UI_trait_shortsigh",
@@ -203,7 +205,7 @@ addTrait("Overweight", {
     name = "UI_trait_overweight",
     description = "UI_trait_overweightdesc",
     cost = -6,
-    exclude = { "Obese", "Underweight" "Very Underweight", "Emaciated" }
+    exclude = { "Obese", "Underweight", "Very Underweight", "Emaciated" }
 })
 
 addTrait("Obese", {

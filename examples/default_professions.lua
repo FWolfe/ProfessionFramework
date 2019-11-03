@@ -133,7 +133,7 @@ addProfession('farmer', {
 
 addProfession('fisherman', {
     name = "UI_prof_Fisherman",
-    cost = "profession_fisher2",
+    icon = "profession_fisher2",
     cost = -2,
     xp = {
         [Perks.Fishing] = 3,
