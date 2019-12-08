@@ -1,5 +1,4 @@
 local oldOnSelectProf = CharacterCreationProfession.onSelectProf
-local filtered = { }
 
 -- stupid lua....
 local function contains(tbl, value)
@@ -67,7 +66,7 @@ local function filterTraits(self, profession)
     end
 
     -- add previously filtered stuff back onto the list
-    for _, trait in ipairs(filtered) do
+    for _, trait in ipairs(self.filteredTraits) do
         addFiltered(self, TraitFactory.getTrait(trait))
     end
 
@@ -76,7 +75,7 @@ local function filterTraits(self, profession)
         removeFiltered(self, TraitFactory.getTrait(trait))
     until true end
 
-    filtered = restricted -- update the list
+    self.filteredTraits = restricted -- update the list
 
     -- resort the listboxes
     CharacterCreationMain.sort(self.listboxTrait.items);
@@ -89,4 +88,8 @@ function CharacterCreationProfession:onSelectProf(item)
     ProfessionFramework.log(ProfessionFramework.INFO, "New Profession selected")
     oldOnSelectProf(self, item)
     filterTraits(self, item:getType())
+end
+
+function CharacterCreationProfession:create()
+    self.filteredTraits = {}
 end
