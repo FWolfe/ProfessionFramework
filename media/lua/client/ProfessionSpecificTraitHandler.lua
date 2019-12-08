@@ -1,5 +1,7 @@
 local oldOnSelectProf = CharacterCreationProfession.onSelectProf
 local oldCreate = CharacterCreationProfession.create
+local oldAddTrait = CharacterCreationProfession.addTrait
+local oldRemoveTrait = CharacterCreationProfession.removeTrait
 
 -- stupid lua....
 local function contains(tbl, value)
@@ -8,19 +10,31 @@ local function contains(tbl, value)
 end
 
 
+local function isSelected(self, trait)
+    for i,v in ipairs(self.listboxTraitSelected.items) do
+        if v.item:getType() == trait then
+            return i
+        end
+    end
+end
+
 -- returns the list of traits this profession cant have
 local function getRestricted(self, profession)
-    local restricted = {}
+    local result = {}
     for trait, details in pairs(ProfessionFramework.Traits) do repeat
         if details.profession then break end
-        if not details.restricted then return break end
-        if contains(details.restricted, profession) then break end
+
+        local remove = false
+        if details.restricted and not contains(details.restricted, profession) then remove = true end
+        if details.required then
+            for _, req in ipairs(details.required) do
+                if not isSelected(self, req) then remove = true end
+            end
+        end
         
-        
-        --if isAllowed(trait, profession) then break end -- skip to next trait
-        table.insert(restricted, trait)
+        if remove then table.insert(result, trait) end
     until true end
-    return restricted
+    return result
 end
 
 
@@ -66,9 +80,9 @@ local function filterTraits(self, profession)
     end
 
     -- and no remove whatever shouldnt be there
-    for _, trait in ipairs(restricted) do repeat
+    for _, trait in ipairs(restricted) do
         removeFiltered(self, TraitFactory.getTrait(trait))
-    until true end
+    end
 
     self.filteredTraits = restricted -- update the list
 
@@ -84,6 +98,22 @@ function CharacterCreationProfession:onSelectProf(item)
 end
 
 function CharacterCreationProfession:create()
-    oldCreate(self)
     self.filteredTraits = {}
+    oldCreate(self)
 end
+
+function CharacterCreationProfession:addTrait(bad)
+    oldAddTrait(self, bad)
+    filterTraits(self, self.profession:getType())
+end
+function CharacterCreationProfession:removeTrait()
+    oldRemoveTrait(self)
+    filterTraits(self, self.profession:getType())
+end
+
+-- CharacterCreationProfession:addTrait(bad)
+
+--self.listboxTrait:setOnMouseDownFunction(self, CharacterCreationProfession.onSelectTrait);
+--self.listboxTrait:setOnMouseDoubleClick(self, CharacterCreationProfession.onDblClickTrait);
+--self.listboxBadTrait:setOnMouseDownFunction(self, CharacterCreationProfession.onSelectBadTrait);
+--self.listboxBadTrait:setOnMouseDoubleClick(self, CharacterCreationProfession.onDblClickBadTrait);
