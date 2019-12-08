@@ -12,8 +12,7 @@ local function isAllowed(trait, profession)
     local details = ProfessionFramework.getTrait(trait)
     if not details then return true end -- unknown trait
     if not details.restricted then return true end -- no restrictions
-    if contains(details.restricted, profession) == true then return true end -- restricted, but allowed.
-    return false
+    return contains(details.restricted, profession)
 end
 
 
