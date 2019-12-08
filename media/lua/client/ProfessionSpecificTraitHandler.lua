@@ -1,4 +1,5 @@
 local oldOnSelectProf = CharacterCreationProfession.onSelectProf
+local oldCreate = CharacterCreationProfession:create
 
 -- stupid lua....
 local function contains(tbl, value)
@@ -7,21 +8,16 @@ local function contains(tbl, value)
 end
 
 
--- checks if a profession is allowed to have a specific trait
-local function isAllowed(trait, profession)
-    local details = ProfessionFramework.getTrait(trait)
-    if not details then return true end -- unknown trait
-    if not details.restricted then return true end -- no restrictions
-    return contains(details.restricted, profession)
-end
-
-
 -- returns the list of traits this profession cant have
-local function getRestricted(profession)
+local function getRestricted(self, profession)
     local restricted = {}
     for trait, details in pairs(ProfessionFramework.Traits) do repeat
         if details.profession then break end
-        if isAllowed(trait, profession) then break end -- skip to next trait
+        if not details.restricted then return break end
+        if contains(details.restricted, profession) then break end
+        
+        
+        --if isAllowed(trait, profession) then break end -- skip to next trait
         table.insert(restricted, trait)
     until true end
     return restricted
@@ -53,7 +49,7 @@ end
 -- filter the traits, both selected and available.
 local function filterTraits(self, profession)
     -- build a list of not allowed traits.
-    local restricted = getRestricted(profession)
+    local restricted = getRestricted(self, profession)
     
     -- remove any selected traits that are now restricted. this is messy vanilla code
     for i=self.listboxTraitSelected:size(),1,-1 do
@@ -81,8 +77,6 @@ local function filterTraits(self, profession)
     CharacterCreationMain.invertSort(self.listboxBadTrait.items);
 end 
 
-
-
 function CharacterCreationProfession:onSelectProf(item)
     ProfessionFramework.log(ProfessionFramework.INFO, "New Profession selected")
     oldOnSelectProf(self, item)
@@ -90,5 +84,6 @@ function CharacterCreationProfession:onSelectProf(item)
 end
 
 function CharacterCreationProfession:create()
+    oldCreate(self)
     self.filteredTraits = {}
 end
