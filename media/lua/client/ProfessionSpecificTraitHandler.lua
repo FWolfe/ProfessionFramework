@@ -1,5 +1,5 @@
 local oldOnSelectProf = CharacterCreationProfession.onSelectProf
-local oldCreate = CharacterCreationProfession:create
+local oldCreate = CharacterCreationProfession.create
 
 -- stupid lua....
 local function contains(tbl, value)
