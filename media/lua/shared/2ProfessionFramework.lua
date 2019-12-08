@@ -445,7 +445,7 @@ end
 
 
 -- stupid lua....
-local function contains(value, tbl)
+local function contains(tbl, value)
     for _,v in ipairs(tbl) do if v == value then return true end end
     return false
 end
@@ -458,7 +458,7 @@ end
 ]]
 ProfessionFramework.addClothes = function(name, details)
     ProfessionFramework.log(ProfessionFramework.DEBUG, "Checking clothing for ".. name)
-    if not details.clothing or not ClothingSelectionDefinitions then return end
+    if not details.clothing or ProfessionFramework.COMPATIBILITY_MODE == true then return end
     local clothing = details.clothing
     local group = BodyLocations.getGroup("Human")
     local defaults
@@ -501,7 +501,7 @@ ProfessionFramework.addClothes = function(name, details)
                 ProfessionFramework.log(ProfessionFramework.DEBUG, "Merging clothing table for ".. loc)
                 here.items = here.items or {}
                 for _, ni in ipairs(newitems) do
-                    if not contains(ni, here.items) then
+                    if not contains(here.items, ni) then
                         table.insert(here.items, ni)
                     end
                 end
