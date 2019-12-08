@@ -111,9 +111,3 @@ function CharacterCreationProfession:removeTrait()
     filterTraits(self, self.profession:getType())
 end
 
--- CharacterCreationProfession:addTrait(bad)
-
---self.listboxTrait:setOnMouseDownFunction(self, CharacterCreationProfession.onSelectTrait);
---self.listboxTrait:setOnMouseDoubleClick(self, CharacterCreationProfession.onDblClickTrait);
---self.listboxBadTrait:setOnMouseDownFunction(self, CharacterCreationProfession.onSelectBadTrait);
---self.listboxBadTrait:setOnMouseDoubleClick(self, CharacterCreationProfession.onDblClickBadTrait);
