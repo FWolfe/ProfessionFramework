@@ -25,8 +25,8 @@ addTrait("Handy", {
     description = "UI_trait_handydesc",
     cost = 8,
     xp = {
-        ["Perks.Maintenance"] = 1,
-        ["Perks.Woodwork"] = 1
+        [Perks.Maintenance] = 1,
+        [Perks.Woodwork] = 1
     }
 })
 
