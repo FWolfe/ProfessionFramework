@@ -137,7 +137,7 @@ ProfessionFramework.log = function(level, text)
 end
 
 
---[[- Registers a profession with the profession framework
+--[[- Registers a profession with the profession framework.
 
 Defines a profession selectable by the player. Both new custom professions and the default vanilla ones can be defined in
 this manor.
@@ -410,7 +410,7 @@ ProfessionFramework.doProfessions = function()
 end
 
 
---[[- Adds starting kits for any profession and traits
+--[[- Adds starting kits for any profession and traits.
 
 This function is called automatically by `ProfessionFramework.onNewGame`
 
@@ -448,6 +448,39 @@ end
 local function contains(tbl, value)
     for _,v in ipairs(tbl) do if v == value then return true end end
     return false
+end
+
+--[[- Returns a table list of traits that should be restricted.
+
+@tparam string profession the string name of the profession to check against.
+@tparam table current_traits a table list of traits already selected.
+
+@treturn table a table list of traits this character shouldn't have. 
+
+]]
+ProfessionFramework.getRestrictedTraits = function(profession, current_traits)
+    local result = {}
+    for trait, details in pairs(ProfessionFramework.Traits) do repeat
+        local restrict = false
+        if details.profession then break end -- profession traits are restricted by nature.
+        if details.restricted and not contains(details.restricted, profession) then restrict = true end
+        if details.required then
+            for _, req in ipairs(details.required) do
+                for t in req:gmatch('([^|]+)') do -- split into potential 'optionals'
+                    restrict = true -- set this back to false if we find one
+                    if contains(current_traits, t) then -- found it! no need to check other optionals
+                         restrict = false
+                         break
+                    end
+                end
+                if restrict then break end -- we didnt find our last required item.
+                --if not contains(current_traits, req) then restrict = true end
+            end
+        end
+        
+        if restrict then table.insert(result, trait) end
+    until true end
+    return result
 end
 
 --[[- Called automatically by `ProfessionFramework.doProfessions`
