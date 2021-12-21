@@ -1,4 +1,20 @@
+--[[- Modifications to the Profession/Trait selection screen.
+
+Modifies various apsects of the selection screen, allowing for traits with requirements (ie: only allowed for specific
+professions, or to have other traits selected first).
+
+Please Note this is experimental, and requires `ProfessionFramework.ExperimentalFeatures` to be `true`
+
+@script ProfessionSpecificTraitHandler
+@author Fenris_Wolf
+@release 1.11
+@copyright 2018
+
+]]
+
 local PF = ProfessionFramework
+
+if not PF.ExperimentalFeatures then return end
 
 local oldOnSelectProf = CharacterCreationProfession.onSelectProf
 local oldCreate = CharacterCreationProfession.create
@@ -9,7 +25,7 @@ local NORMAL = 0
 local FILTERED = 1
 local SELECTED = 2
 
- 
+
 -- stupid lua....
 local function contains(tbl, value)
     for _,v in ipairs(tbl) do if v == value then return true end end
@@ -21,7 +37,7 @@ local function copyTable(data, depth)
     if depth > 100 then return nil end
     local result = {}
     for k, v in pairs(data) do
-        if type(v) == 'table' then 
+        if type(v) == 'table' then
             v = copyTable(v, 1 + depth)
         end
         result[k] = v
@@ -53,7 +69,7 @@ local function addFiltered(self, trait)
     PF.log(PF.DEBUG, "Unfiltering ".. trait:getType())
     self.filteredTraits[trait:getType()] = NORMAL
 
-    local list = goodOrBad(self, trait)  
+    local list = goodOrBad(self, trait)
     list:addItem(trait:getLabel(), trait)
 end
 
@@ -77,7 +93,7 @@ local function removeFiltered(self, trait)
             PF.log(PF.ERROR, "Trait failed to remove twice. Not good.")
         end
     end
-    
+
 end
 
 
@@ -116,12 +132,15 @@ local function removeSelected(self, profession)
     ]]
 end
 
+local function alphaSort(a, b)
+    return a.text < b.text
+end
 -- filter the traits, both selected and available.
 local function filterTraits(self, profession)
     -- build a list of not allowed traits.
     local restricted = PF.getRestrictedTraits(profession, getSelected(self))
     PF.log(PF.DEBUG, "Filtering Traits.....")
-    
+
     -- add previously filtered stuff back onto the list
     for trait, value in pairs(self.filteredTraits) do
         if value == FILTERED then
@@ -137,9 +156,15 @@ local function filterTraits(self, profession)
     --self.filteredTraits = restricted -- update the list
 
     -- resort the listboxes
-    CharacterCreationMain.sort(self.listboxTrait.items);
-    CharacterCreationMain.invertSort(self.listboxBadTrait.items);
-end 
+    if ProfessionFramework.ALPHASORT then
+        table.sort(self.listboxTrait.items, alphaSort)
+        table.sort(self.listboxBadTrait.items, alphaSort)
+        --not string.sort(a.text, b.text)
+    else
+        CharacterCreationMain.sort(self.listboxTrait.items);
+        CharacterCreationMain.invertSort(self.listboxBadTrait.items);
+    end
+end
 
 
 -- OVERWRITES
@@ -160,13 +185,13 @@ function CharacterCreationProfession:addTrait(bad, nofilter)
 end
 
 function CharacterCreationProfession:removeTrait(nofilter)
-    PF.log(PF.DEBUG, "Removing trait nofilter:"..tostring(nofilter))    
+    PF.log(PF.DEBUG, "Removing trait nofilter:"..tostring(nofilter))
     PF.log(PF.DEBUG, "Index is: ".. tostring(self.listboxTraitSelected.selected))
     local trait = self.listboxTraitSelected.items[self.listboxTraitSelected.selected]
     PF.log(PF.DEBUG, "Trait is: "..tostring(trait.text))
     oldRemoveTrait(self)
     removeSelected(self, self.profession:getType())
-    
+
     if nofilter ~= true then
         filterTraits(self, self.profession:getType())
     end
@@ -180,7 +205,7 @@ function CharacterCreationProfession:onSelectProf(item)
     filterTraits(self, profession)
 end
 
-if not ProfessionFramework.COMPATIBILITY_MODE then 
+if not ProfessionFramework.COMPATIBILITY_MODE then
     local oldDoClothingCombo = CharacterCreationMain.doClothingCombo
 
     function CharacterCreationMain:doClothingCombo(definition, erasePrevious)
@@ -202,8 +227,7 @@ if not ProfessionFramework.COMPATIBILITY_MODE then
                 end
             end
         until true end
-        
+
         oldDoClothingCombo(self, definition, erasePrevious)
     end
 end
-
