@@ -48,7 +48,7 @@ Generally you will only need to make use of the functions `ProfessionFramework.a
     })
 
 @module ProfessionFramework
-@release 1.1
+@release 1.11
 @author Fenris_Wolf
 @copyright 2018
 
@@ -60,10 +60,10 @@ ProfessionFramework = { }
 -- @section Constants
 
 --- Current version number
-ProfessionFramework.VERSION = "1.10-stable"
+ProfessionFramework.VERSION = "1.11-a1"
 --- Author/Maintainer
 ProfessionFramework.AUTHOR = "Fenris_Wolf"
---- Backwards compatibility mode (build 40) 
+--- Backwards compatibility mode (build 40)
 ProfessionFramework.COMPATIBILITY_MODE = false
 
 --[[- Logging Constants.
@@ -99,15 +99,15 @@ ProfessionFramework.Traits = { }
 --- Remove all vanilla professions (bool)
 ProfessionFramework.RemoveDefaultProfessions = false
 --- Remove all vanilla traits (bool)
+-- note this flag should not normally be used, as several traits overweight/underweight/etc are essentially required by the game.
+-- however required traits can be recreated using the PF if needed.
 ProfessionFramework.RemoveDefaultTraits = false
-
---- Use Profession Framework versions of vanilla traits
-ProfessionFramework.UsePFTraitVersions = false
 --- Always supply starting kits, false to obey sandbox settings (bool)
 ProfessionFramework.AlwaysUseStartingKits = true
 --- Logging level verbosity.
 ProfessionFramework.LogLevel = 2
-
+--- Experimental Features. Enable at own risk. Expect breakage.
+ProfessionFramework.ExperimentalFeatures = false
 
 -- string names for log levels.
 ProfessionFramework.LogLevelStrings = { [0] = "ERROR", [1] = "WARN", [2] = "INFO", [3] = "DEBUG"}
@@ -181,9 +181,9 @@ The clothing table supports several 'special' key/value pairs:
 
     * `replace_items` bool value, only replace vanilla options for the BodyLocations specified in this table. (default false)  
 
-    * `Male` clothing subtable for male selection only (default nil)
+    * `Male` clothing subtable for male selection only (default nil)  
 
-    * `Female` clothing subtable for female seleciton only (default nil)
+    * `Female` clothing subtable for female seleciton only (default nil)  
 
 * OnNewGame = a function to be called when the character is created. (default nil)  
 Arguments are a `IsoPlayer` object, a `IsoGridSquare` object, and the `string` profession name.
@@ -251,7 +251,7 @@ Note: Can not be adjusted for traits already registered with the java TraitFacto
 Note when using the xp table on a trait already setup with the java TraitFactory this table will not change 
 existing xp levels unless they are redefined here.
 
-* `swap`: (string) name of another trait to swap this one with OnNewGame. This trait is removed from the player, and the
+* `swap`: (string) name of another trait to swap this one with OnNewGame. This trait is removed from the player, and the 
 new one added This should only really be used for the 'special' traits.
 
 * `exclude`: (table) list of traits this one should be mutually exclusive with.
@@ -262,10 +262,10 @@ new one added This should only really be used for the 'special' traits.
 
 * `square`: (table) containing items this trait starts with (on the ground). Keys the item names, values are the count.
 
-* `OnNewGame`: (function) a callback executed when the character is created if it has this trait. Arguments are:
+* `OnNewGame`: (function) a callback executed when the character is created if it has this trait. Arguments are:  
 a IsoPlayer object, a IsoGridSquare object, and the string trait name.
 
-* `OnGameStart`: (function) a callback executed OnGameStart if the player has this trait. Arguments are:
+* `OnGameStart`: (function) a callback executed OnGameStart if the player has this trait. Arguments are:  
 the string trait name.
 
 ]]
@@ -293,14 +293,14 @@ end
 
 This function is called automatically with the `OnGameBoot` event, and overrides the vanilla `BaseGameCharacterDetails.DoTraits`
 
-It calls the original `BaseGameCharacterDetails.DoTraits` before running its custom code unless UsePFTraitVersions is true.
+It calls the original `BaseGameCharacterDetails.DoTraits` before running its custom code unless RemoveDefaultTraits is true.
 
 The overwrite is required to ensure custom traits are still available in MP after player death.
 
 ]]
 ProfessionFramework.doTraits = function()
-    if not ProfessionFramework.UsePFTraitVersions then oldDoTraits() end
-    
+    if not ProfessionFramework.RemoveDefaultTraits then oldDoTraits() end
+
 
     local sleepOK = (isClient() or isServer()) and getServerOptions():getBoolean("SleepAllowed") and getServerOptions():getBoolean("SleepNeeded")
 
@@ -455,7 +455,7 @@ end
 @tparam string profession the string name of the profession to check against.
 @tparam table current_traits a table list of traits already selected.
 
-@treturn table a table list of traits this character shouldn't have. 
+@treturn table a table list of traits this character shouldn't have.
 
 ]]
 ProfessionFramework.getRestrictedTraits = function(profession, current_traits)
@@ -477,7 +477,7 @@ ProfessionFramework.getRestrictedTraits = function(profession, current_traits)
                 --if not contains(current_traits, req) then restrict = true end
             end
         end
-        
+
         if restrict then table.insert(result, trait) end
     until true end
     return result
