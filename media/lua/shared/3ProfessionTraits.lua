@@ -12,7 +12,7 @@ SpeedDemon2, etc)
 
 @script 3ProfessionTraits
 @author Fenris_Wolf
-@release 1.1
+@release 1.11
 @copyright 2018
 
 ]]
@@ -438,7 +438,7 @@ addTrait("Handy2", {
     name = "UI_trait_handy",
     description = "UI_trait_handydesc",
     profession = true,
-    exclude = {"Handy2"},
+    exclude = {"Handy"},
     swap = "Handy",
 })
 
@@ -446,6 +446,6 @@ addTrait("Jogger2", {
     name = "UI_trait_Jogger",
     description = "UI_trait_JoggerDesc",
     profession = true,
-    exclude = {"Jogger2"},
+    exclude = {"Jogger"},
     swap = "Jogger",
 })
