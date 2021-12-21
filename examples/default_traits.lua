@@ -87,7 +87,7 @@ addTrait("ShortSighted", {
 addTrait("HardOfHearing", {
     name = "UI_trait_hardhear",
     description = "UI_trait_hardheardesc",
-    cost = -2,
+    cost = -4,
     exclude = { "KeenHearing" }
 })
 
