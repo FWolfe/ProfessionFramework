@@ -48,7 +48,7 @@ Generally you will only need to make use of the functions `ProfessionFramework.a
     })
 
 @module ProfessionFramework
-@release 1.11
+@release 1.2
 @author Fenris_Wolf
 @copyright 2018
 
@@ -60,7 +60,7 @@ ProfessionFramework = { }
 -- @section Constants
 
 --- Current version number
-ProfessionFramework.VERSION = "1.11-a1"
+ProfessionFramework.VERSION = "1.2-stable"
 --- Author/Maintainer
 ProfessionFramework.AUTHOR = "Fenris_Wolf"
 --- Backwards compatibility mode (build 40)
@@ -343,10 +343,15 @@ ProfessionFramework.doTraits = function()
             end
         end
     end
+
     for ttype, details in pairs(ProfessionFramework.Traits) do
         local exclude = details.exclude or {}
         for _, name in ipairs(exclude) do
-            TraitFactory.setMutualExclusive(ttype, name)
+            if TraitFactory.getTrait(name) then
+                TraitFactory.setMutualExclusive(ttype, name)
+            else
+                ProfessionFramework.log(ProfessionFramework.ERROR, "Trait "..ttype .. "tried to set mutually excludive on non-existant trait ".. name)
+            end
         end
     end
 
@@ -452,6 +457,8 @@ end
 
 --[[- Returns a table list of traits that should be restricted.
 
+Note this currently experimental, and requires `ProfessionFramework.ExperimentalFeatures`
+
 @tparam string profession the string name of the profession to check against.
 @tparam table current_traits a table list of traits already selected.
 
@@ -483,7 +490,9 @@ ProfessionFramework.getRestrictedTraits = function(profession, current_traits)
     return result
 end
 
---[[- Called automatically by `ProfessionFramework.doProfessions`
+--[[- Adds clothes to the character creation screen.
+
+Called automatically by `ProfessionFramework.doProfessions`
 
 @tparam string name
 @tparam table details

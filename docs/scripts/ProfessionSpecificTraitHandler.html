@@ -35,8 +35,8 @@
 <h2>Scripts</h2>
 <ul class="nowrap">
   <li><a href="../scripts/ProfessionFrameworkClient.html">ProfessionFrameworkClient</a></li>
-  <li><a href="../scripts/ProfessionSpecificTraitHandler.html">ProfessionSpecificTraitHandler</a></li>
-  <li><strong>3ProfessionTraits</strong></li>
+  <li><strong>ProfessionSpecificTraitHandler</strong></li>
+  <li><a href="../scripts/3ProfessionTraits.html">3ProfessionTraits</a></li>
 </ul>
 <h2>Modules</h2>
 <ul class="nowrap">
@@ -56,17 +56,12 @@
 
 <div id="content">
 
-<h1>Script <code>3ProfessionTraits</code></h1>
-<p>Enables all <em>special</em> traits as profession traits.</p>
-<p>Many traits such as Brave, Lucky, Speed Demon, etc have effects that are hardcoded in various places through PZ&rsquo;s lua
-and java files, and normal methods of making &ldquo;Profession versions&rdquo; (can&rsquo;t be picked and cost 0 points) will not properly work,
-as the trait name will not match.</p>
+<h1>Script <code>ProfessionSpecificTraitHandler</code></h1>
+<p>Modifications to the Profession/Trait selection screen.</p>
+<p>Modifies various apsects of the selection screen, allowing for traits with requirements (ie: only allowed for specific
+professions, or to have other traits selected first).</p>
 
-<p>This script solves the problem by using the <code>swap</code> flag on the profession version of the trait, thus replacing it with
-the normal non-profession version when the character is made. This way traits with hardcoded effects function normally.</p>
-
-<p>All these profession traits have identical names to the non-profession version, but prefixed with a &lsquo;2&rsquo; (ie: Brave2,
-SpeedDemon2, etc)</p>
+<p>Please Note this is experimental, and requires <a href="../modules/ProfessionFramework.html#ExperimentalFeatures">ProfessionFramework.ExperimentalFeatures</a> to be <code>true</code></p>
     <h3>Info:</h3>
     <ul>
         <li><strong>Copyright</strong>: 2018</li>

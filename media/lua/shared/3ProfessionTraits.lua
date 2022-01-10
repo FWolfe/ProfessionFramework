@@ -12,7 +12,7 @@ SpeedDemon2, etc)
 
 @script 3ProfessionTraits
 @author Fenris_Wolf
-@release 1.11
+@release 1.2
 @copyright 2018
 
 ]]

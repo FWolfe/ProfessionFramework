@@ -48,6 +48,7 @@
 <h2>Scripts</h2>
 <ul class="nowrap">
   <li><a href="../scripts/ProfessionFrameworkClient.html">ProfessionFrameworkClient</a></li>
+  <li><a href="../scripts/ProfessionSpecificTraitHandler.html">ProfessionSpecificTraitHandler</a></li>
   <li><a href="../scripts/3ProfessionTraits.html">3ProfessionTraits</a></li>
 </ul>
 <h2>Topics</h2>
@@ -118,7 +119,7 @@ Generally you will only need to make use of the functions <a href="../modules/Pr
     <h3>Info:</h3>
     <ul>
         <li><strong>Copyright</strong>: 2018</li>
-        <li><strong>Release</strong>: 1.1</li>
+        <li><strong>Release</strong>: 1.2</li>
         <li><strong>Author</strong>: Fenris_Wolf</li>
     </ul>
 
@@ -176,11 +177,8 @@ Generally you will only need to make use of the functions <a href="../modules/Pr
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#RemoveDefaultTraits">RemoveDefaultTraits</a></td>
-	<td class="summary">Remove all vanilla traits (bool)</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#UsePFTraitVersions">UsePFTraitVersions</a></td>
-	<td class="summary">Use Profession Framework versions of vanilla traits</td>
+	<td class="summary">Remove all vanilla traits (bool)
+ note this flag should not normally be used, as several traits overweight/underweight/etc are essentially required by the game.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#AlwaysUseStartingKits">AlwaysUseStartingKits</a></td>
@@ -189,6 +187,10 @@ Generally you will only need to make use of the functions <a href="../modules/Pr
 	<tr>
 	<td class="name" nowrap><a href="#LogLevel">LogLevel</a></td>
 	<td class="summary">Logging level verbosity.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ExperimentalFeatures">ExperimentalFeatures</a></td>
+	<td class="summary">Experimental Features.</td>
 	</tr>
 </table>
 <h2><a href="#Functions">Functions </a></h2>
@@ -199,9 +201,7 @@ Generally you will only need to make use of the functions <a href="../modules/Pr
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#addProfession">addProfession (type, details)</a></td>
-	<td class="summary">Registers a profession with the profession framework</p>
-
-<p>Defines a profession selectable by the player.</td>
+	<td class="summary">Registers a profession with the profession framework.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#getProfession">getProfession (type)</a></td>
@@ -228,11 +228,15 @@ Generally you will only need to make use of the functions <a href="../modules/Pr
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#addStartingKit">addStartingKit (player, square, details)</a></td>
-	<td class="summary">Adds starting kits for any profession and traits</td>
+	<td class="summary">Adds starting kits for any profession and traits.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getRestrictedTraits">getRestrictedTraits (profession, current_traits)</a></td>
+	<td class="summary">Returns a table list of traits that should be restricted.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#addClothes">addClothes (name, details)</a></td>
-	<td class="summary">Called automatically by <a href="../modules/ProfessionFramework.html#doProfessions">ProfessionFramework.doProfessions</a></td>
+	<td class="summary">Adds clothes to the character creation screen.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#onSpawnRegionsLoaded">onSpawnRegionsLoaded (regions)</a></td>
@@ -420,20 +424,8 @@ Generally you will only need to make use of the functions <a href="../modules/Pr
     </dt>
     <dd>
     Remove all vanilla traits (bool)
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "UsePFTraitVersions"></a>
-    <strong>UsePFTraitVersions</strong>
-    </dt>
-    <dd>
-    Use Profession Framework versions of vanilla traits
+ note this flag should not normally be used, as several traits overweight/underweight/etc are essentially required by the game.
+ however required traits can be recreated using the PF if needed.
 
 
 
@@ -462,6 +454,20 @@ Generally you will only need to make use of the functions <a href="../modules/Pr
     </dt>
     <dd>
     Logging level verbosity.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "ExperimentalFeatures"></a>
+    <strong>ExperimentalFeatures</strong>
+    </dt>
+    <dd>
+    Experimental Features.  Enable at own risk. Expect breakage.
 
 
 
@@ -510,9 +516,9 @@ Generally you will only need to make use of the functions <a href="../modules/Pr
     <strong>addProfession (type, details)</strong>
     </dt>
     <dd>
-    Registers a profession with the profession framework</p>
+    Registers a profession with the profession framework.</p>
 
-<p>Defines a profession selectable by the player.  Both new custom professions and the default vanilla ones can be defined in
+<p>Defines a profession selectable by the player. Both new custom professions and the default vanilla ones can be defined in
 this manor.</p>
 
 <p>When overwriting a vanilla (or pre-existing) profession, not all key/value pairs in the <code>details</code> table argument
@@ -656,9 +662,9 @@ new one added This should only really be used for the &lsquo;special&rsquo; trai
 <li><p><code>add</code>: (table) list of additional traits to add to the player OnNewGame</p></li>
 <li><p><code>inventory</code>: (table) containing items this trait starts with. Keys are item names, values are the count.</p></li>
 <li><p><code>square</code>: (table) containing items this trait starts with (on the ground). Keys the item names, values are the count.</p></li>
-<li><p><code>OnNewGame</code>: (function) a callback executed when the character is created if it has this trait. Arguments are:
+<li><p><code>OnNewGame</code>: (function) a callback executed when the character is created if it has this trait. Arguments are:<br/>
 a IsoPlayer object, a IsoGridSquare object, and the string trait name.</p></li>
-<li><p><code>OnGameStart</code>: (function) a callback executed OnGameStart if the player has this trait. Arguments are:
+<li><p><code>OnGameStart</code>: (function) a callback executed OnGameStart if the player has this trait. Arguments are:<br/>
 the string trait name.</p></li>
 </ul>
 
@@ -710,7 +716,7 @@ the string trait name.</p></li>
 
 <p>This function is called automatically with the <code>OnGameBoot</code> event, and overrides the vanilla <code>BaseGameCharacterDetails.DoTraits</code></p>
 
-<p>It calls the original <code>BaseGameCharacterDetails.DoTraits</code> before running its custom code unless UsePFTraitVersions is true.</p>
+<p>It calls the original <code>BaseGameCharacterDetails.DoTraits</code> before running its custom code unless RemoveDefaultTraits is true.</p>
 
 <p>The overwrite is required to ensure custom traits are still available in MP after player death.
 
@@ -746,7 +752,9 @@ available in MP after player death.
     <strong>addStartingKit (player, square, details)</strong>
     </dt>
     <dd>
-    Adds starting kits for any profession and traits This function is called automatically by <a href="../modules/ProfessionFramework.html#onNewGame">ProfessionFramework.onNewGame</a>
+    Adds starting kits for any profession and traits.</p>
+
+<p>This function is called automatically by <a href="../modules/ProfessionFramework.html#onNewGame">ProfessionFramework.onNewGame</a>
 
 
     <h3>Parameters:</h3>
@@ -771,11 +779,46 @@ available in MP after player death.
 
 </dd>
     <dt>
+    <a name = "getRestrictedTraits"></a>
+    <strong>getRestrictedTraits (profession, current_traits)</strong>
+    </dt>
+    <dd>
+    Returns a table list of traits that should be restricted.</p>
+
+<p>Note this currently experimental, and requires <a href="../modules/ProfessionFramework.html#ExperimentalFeatures">ProfessionFramework.ExperimentalFeatures</a>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">profession</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         the string name of the profession to check against.
+        </li>
+        <li><span class="parameter">current_traits</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         a table list of traits already selected.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        a table list of traits this character shouldn&rsquo;t have.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
     <a name = "addClothes"></a>
     <strong>addClothes (name, details)</strong>
     </dt>
     <dd>
-    Called automatically by <a href="../modules/ProfessionFramework.html#doProfessions">ProfessionFramework.doProfessions</a>
+    Adds clothes to the character creation screen.</p>
+
+<p>Called automatically by <a href="../modules/ProfessionFramework.html#doProfessions">ProfessionFramework.doProfessions</a>
 
 
     <h3>Parameters:</h3>
@@ -873,7 +916,7 @@ profession. Any traits defined with the <code>swap</code> key will be swapped ou
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2019-09-29 22:02:33 </i>
+<i style="float:right;">Last updated 2022-01-10 09:07:12 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
