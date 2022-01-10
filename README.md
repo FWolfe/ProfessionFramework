@@ -191,6 +191,15 @@ ProfessionFramework.addTrait('Nightmares', {
 
 ## Changelog
 
+#### v1.2
+
+* added check to ensure traits exsist before setting mutually exclusive
+* added Experimental trait features (needs to be manually enabled with `ProfessionFramework.ExperimentalFeatures`).  
+Note these are not fully tested for stability at this time, and modify the character selection UI.
+
+* EXPERIMENTAL: added trait 'requirements', needing another trait or profession to be selected first.
+* EXPERIMENTAL: clothing options can be added from traits
+
 #### v1.1
 
 * added `spawn` key to profession tables, for custom spawn locations.
