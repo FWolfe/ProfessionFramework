@@ -7,7 +7,7 @@ Please Note this is experimental, and requires `ProfessionFramework.Experimental
 
 @script ProfessionSpecificTraitHandler
 @author Fenris_Wolf
-@release 1.11
+@release 1.2
 @copyright 2018
 
 ]]

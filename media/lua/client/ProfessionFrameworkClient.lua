@@ -4,7 +4,7 @@ See `ProfessionFramework.onGameStart` and `ProfessionFramework.onNewGame`
 
 @script ProfessionFrameworkClient
 @author Fenris_Wolf
-@release 1.1
+@release 1.2
 @copyright 2018
 
 ]]
