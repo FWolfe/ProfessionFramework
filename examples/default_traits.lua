@@ -9,8 +9,8 @@ local trait = ProfessionFramework.getTrait(name)
 
 ]]
 
--- skip this file unless UsePFTraitVersions is true 
-if not ProfessionFramework.UsePFTraitVersions then return end
+-- skip this file unless RemoveDefaultTraits is true 
+if not ProfessionFramework.RemoveDefaultTraits then return end
 
 local addTrait = ProfessionFramework.addTrait
 
