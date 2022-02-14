@@ -172,7 +172,7 @@ Valid key/value pairs the `details` table are:
 
 * square =  a table of items the profession starts with (on the ground). Keys are item names, values are the count. (default nil)
 
-* spawn = a table of region names (keys), and subtable values of spawn locations. Use of this key will overrides vanilla regions. (default nil)
+* spawns = a table of region names (keys), and subtable values of spawn locations. Use of this key will overrides vanilla regions. (default nil)
 
 * clothing = a table of BodyLocations and subtable values of clothing items to enable on the character creation screen. (default nil)  
 The clothing table supports several 'special' key/value pairs:  

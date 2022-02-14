@@ -117,8 +117,8 @@ ProfessionFramework.addProfession('parkranger', {
         Tshirt = {"Base.Tshirt_Profession_RangerBrown", "Base.Tshirt_Profession_RangerGreen"},
         Pants = {"Base.Trousers_Ranger"},
     }
-    spawn = {
-        "Muldraugh, KY" = {
+    spawns = {
+        ["Muldraugh, KY"] = {
             { worldX=11+25, worldY=6+25, posX=140, posY=74 }, -- Medium House near forest
             { worldX=11+25, worldY=9+25, posX=62, posY=47 }, -- Medium house2
             { worldX=11+25, worldY=8+25, posX=116, posY=232 }, -- little house2
